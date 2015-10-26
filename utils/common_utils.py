@@ -7,3 +7,8 @@ __author__ = 'fleago'
 
 def now_lambda():
     return datetime.now()
+
+def format_datetime(dt, format='%Y-%m-%d %H:%M:%S'):
+    if not dt:
+        return ''
+    return dt.strftime(format)

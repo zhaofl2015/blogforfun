@@ -1,0 +1,11 @@
+stage: development
+production:
+  mongo:
+    host: 127.0.0.1:27017
+  mongo-gfs:
+    host: 127.0.0.1;27107
+development:
+  mongo:
+    host: 127.0.0.1:27017
+  mongo-gfs:
+    host: 127.0.0.1;27107
