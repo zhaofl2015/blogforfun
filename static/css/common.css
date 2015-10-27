@@ -1,0 +1,172 @@
+/**
+ * Created by dell on 2015/6/9.
+ */
+
+/* common */
+.container-fluid {max-width: 1300px;}
+.margin-top {margin-top: 10px;}
+.margin-bottom {margin-bottom: 10px;}
+.margin-up-down {margin-top: 10px; margin-bottom: 10px;}
+.bold {font-weight: bold;}
+.grey {color: #999;}
+.red {color: #f00;}
+.pr_10{padding:0 10px 0 0 !important;}
+.pr_24{padding-right: 24px;}
+.mr_10{margin-right:10px;}
+.mb_10{margin-bottom:10px;}
+.mr_20{margin-right:20px;}
+.ml_20{margin-left:20px;}
+.dib{display: inline-block;}
+.p_0{padding: 0 !important;}
+.plr0{padding-left: 0;padding-right: 0;}
+.pre{position: relative;}
+.pa{position: absolute;}
+.dib{display: inline-block;}
+.wpre{white-space: pre;word-break: break-word;}
+.vat{vertical-align: top;}
+
+/*防止内容折行*/
+div,p{
+    word-break: break-all;
+}
+
+/* 回到顶部 */
+.totop {position: fixed; top: 92%; right: 5%;}
+.totop i {color: #000; font-size: 30px; padding: 7px 7px 7px 9px; border-radius: 22px; background-color: #D9D9D9; opacity: 0.6; z-index: 99999;}
+.totop i:hover {opacity: 1;}
+
+/* 请稍候对话框(commonAjax函数使用) */
+.dialogWaiting {animation: dialogWaitingAnimation 0.3s infinite alternate; background-color: #379eae; color: #ffffff; z-index: 2000; position: fixed; top: 20%; left: 50%; margin-left: -100px; width: 200px; text-align: center; padding: 20px; border-radius: 5px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);}
+@keyframes dialogWaitingAnimation {
+    from  {background: #379eae;}
+    to  {background: #225f68;}
+}
+
+/*loading效果*/
+.loadingmask{
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    filter: alpha(opacity=30);
+    -ms-filter: "alpha(opacity=30)";
+    opacity: .3;
+    z-index: 10000;
+    _position: absolute;
+    _top: expression(eval(document.documentElement.scrollTop));
+    _height: expression(eval(document.documentElement.clientHeight));
+}
+.loadingicon{
+    position:fixed;
+    left:50%;
+    top:50%;
+    margin-left:-16px;
+    margin-top:-16px;
+    display:none;
+    z-index:10001;
+}
+
+/*提示框toastr的位置*/
+.toast-middle-center{
+    left: 50%;
+    margin-left: -165px;
+    top: 200px;
+}
+
+/* 用于SelectMultipleField ListWidget + CheckboxInput */
+ul.form-control {overflow: hidden; height: auto;}
+ul.form-control li {float: left; margin-right: 20px; list-style: none;}
+
+.form_option_text{
+    padding-top: 7px;
+}
+
+/* 覆盖jstree 自定义大的展开图标 */
+.jstree-default .jstree-closed > .jstree-ocl {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpCMjRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2ODIxMEE2MzFDOTYxMUU1OUY4RUQ0RUJDOTI3MjM0MSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2ODIxMEE2MjFDOTYxMUU1OUY4RUQ0RUJDOTI3MjM0MSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCMjRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCMjRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmYHd1oAAAEkSURBVHja7Ja/DkRAEMbHRWiI0NCodB5BIvESXoFn8jAqnQegEJVEaOg1d1nJXnbv/LnN4pLLfdVY7M83syMjAKEkSe5woOI4FnAsnAFYgt3gZGETIulG0zQIggBM0+TavK5rSNOUWqMceZ7HDUFyHAdc16VcUSBJknY36fsexnHcfU5VVepaZPnSsiwhy7I5DsMQdF3/+F2mwzBN02J8OIhHvwcStwr/Woe2bZ9xVVXQdR113zAMsG2bDYRP15qKonhbQ5A10PdTh/rkNXUoXdiJ7/tzqkgpisIOWmpGsiYIwvK7+vfRNSBcfFmWNwvPdBiWhHokiiJ+R8MwHJYq8i/y5ijP87l3LMvigqB+a5qGGlBOn4Io0JkwPG4JVw2QDwEGAGMvani3BgKUAAAAAElFTkSuQmCC') no-repeat scroll 3px 3px;
+    background-size: 18px 18px;
+}
+.jstree-default .jstree-open > .jstree-ocl {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpCMzRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFNENFRTMyNzFDOTcxMUU1QTFBM0Q1QjZBQjJGNkYwQiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFNENFRTMyNjFDOTcxMUU1QTFBM0Q1QjZBQjJGNkYwQiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCMzRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCMzRFNzQyNzk2MUNFNTExQTBDMUM5OUMwNzgzOTIxOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuOCHLgAAADVSURBVHjaYmRAAjNnzvzPQEWQnp7OCGMz0sICbJYxMdAYwDzBguwbfn5+BgcHBwZxcXGKDL979y7D3r17UcRQfGRlZUWxJSCgrKzMoKWlheIrFIvY2NioFmS8vLy4fURLMGrR4LeIBZfE9evXGX79+kWSYUJCQgyysrKkWXT48GGSXQ2yBJdFAx90oaGhJAcdDw8P6RYJCgqOJu9Ri+hg0bt376hm8LNnz3An71OnToHzjoSEBEWW3L59m+Hx48coDRSat4JQLKKlZbDmFiO9GpAAAQYAKiFDaDP/5C8AAAAASUVORK5CYII=') no-repeat scroll 3px 3px;
+    background-size: 18px 18px;
+}
+
+/*题目预览区域*/
+.previewarea {
+    position: fixed;
+    right: 20px;
+    top: 72px;
+    min-height: 600px;
+}
+.form-horizontal .radio-inline {
+    margin-right: 20px;
+}
+
+/*知识点树 设置最大宽度*/
+.bootstrap-tagsinput .tag{
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-right: 18px;
+}
+.bootstrap-tagsinput .tag span[data-role="remove"]{
+    position: absolute;
+    right: 2px;
+}
+
+/*试题列表，重置样式*/
+.question_panel .col-sm-1.control-label{
+    width: 12%;
+}
+.popover{
+    max-width: 500px;
+}
+
+/*正确、错误图标*/
+.icon-wrong, .icon-right{
+    font-size: 36px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/*goal标签通用样式*/
+.goaltag{
+    position: relative;
+    left: -4px;
+    margin-bottom: 10px;
+}
+.goaltag .glyphicon-remove{
+    text-decoration: none;
+    margin-left: -22px;
+    vertical-align: middle;
+    color: #FFF;
+}
+.goaltag .golatext{
+    margin-left: -4px;
+}
+.markgoal{
+    vertical-align: middle;
+    margin-right: 20px;
+}
+.goallist ul{
+    list-style-type: none;
+    padding-left: 16px;
+}
+.goallist ul li{
+    line-height: 28px;
+    cursor: pointer;
+    padding-left: 10px;
+}
+.goallist ul li:hover{
+    background-color: rgba(0, 0, 0, .3);
+    color: #FFF;
+}
+.goallist ul li.checked{
+    background-color: rgba(0, 0, 0, .5);
+    color: #FFF;
+}

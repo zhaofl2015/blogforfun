@@ -1,0 +1,165 @@
+<style>
+.bootstrap-tagsinput { margin-bottom: auto; }
+</style>
+<div class="row bg-warning" style="padding: 8px 12px 8px 0px; margin: 20px 20px; border: 1px solid #CCC; border-radius: 8px;">
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="col-sm-2">
+                <input type="text" class="form-control" placeholder="资源ID" data-bind="value: resource_id"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: type_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: types -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data.resource_type[1], click: $parent.setType.bind($data, $data.resource_type[0], $data.resource_type[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: status_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: statuses -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setStatus.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control bookDialog" placeholder="选择书本" data-bind="value: book" />
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: level_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: levels -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setLevel.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: gold_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: gold_list -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setGold.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: tag_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: tags -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setTag.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: year_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: years -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setYear.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+    <br/>
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="col-sm-2">
+                <input type="text" class="form-control" placeholder="从哪天" data-bind="datepicker: from_date, value: from_date, valueUpdate: 'keyup'" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <input type="text" class="form-control" placeholder="到哪天" data-bind="datepicker: to_date, value: to_date, valueUpdate: 'keyup'" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <button class="btn btn-primary" data-bind="click: searchSource.bind($data, 1)">搜索</button>
+            </div>
+        </div>
+        <!-- ko if: could_upload -->
+        <div class="form-group">
+            <div class="col-sm-1">
+                <button class="btn btn-primary" data-bind="click: edit.bind($data, 'add')">上传资源</button>
+            </div>
+        </div>
+        <!-- /ko -->
+    </form>
+</div>
+<div class="row" style="margin: auto;">
+    <div class="paginationContainer">{#分页显示区域#}</div>
+
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr class="active">
+                <th>上传时间</th>
+                <th>资源ID</th>
+                <th>上传人ID</th>
+                <th>资源名称</th>
+                <th>教材</th>
+                <th>类型</th>
+                <th>等级</th>
+                <th>标签</th>
+                <th>园丁豆</th>
+                <th>下载次数</th>
+                <th>浏览次数</th>
+                <th>最后一次下载时间</th>
+                <th>备注纪录</th>
+                <th>状态</th>
+                <th style="width: 290px;">操作</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: download_list">
+            <tr>
+                <td data-bind="text: created_at"></td>
+                <td data-bind="text: _id"></td>
+                <td data-bind="text: creator_id"></td>
+                <td data-bind="text: name"></td>
+                <td data-bind="text: $parent.arrayToText(books_node(), 'Observable', 'text')"></td>
+                <td data-bind="text: resource_type"></td>
+                <td data-bind="text: level"></td>
+                <td data-bind="text: $parent.arrayToText(tags(), 'String')"></td>
+                <td data-bind="text: cost"></td>
+                <td data-bind="text: download_times"></td>
+                <td data-bind="text: view_times"></td>
+                <td data-bind="text: last_downloaded_at"></td>
+                <td data-bind="text: description"></td>
+                <td data-bind="text: status_text"></td>
+                <td>
+                    <button type='button' class='btn btn-info btn-sm' data-bind='click: $parent.publish, visible: could_publish'>发布</button>
+                    <button type='button' class='btn btn-warning btn-sm' data-bind='click: $parent.cancel, visible: could_cancel'>取消发布</button>
+                    <button type='button' class='btn btn-success btn-sm' data-bind='click: $parent.edit.bind($data, "edit"), visible: could_edit'>编辑</button>
+                    <a type='button' target="_blank" class='btn btn-primary btn-sm' data-bind='attr: { href: url }, visible: could_download'>下载</a>
+                    <button type='button' class='btn btn-danger btn-sm' data-bind='click: $parent.delete, visible: could_delete'>删除</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>    
+
+    <div class="paginationContainer">{#分页显示区域#}</div> 
+</div>
+<div data-bind="module: dialogs"></div>

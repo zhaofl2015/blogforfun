@@ -24,3 +24,8 @@ class Config(object):
     mongodb_user_name = mongodb_user_name
 
     mongodb_host = yaml[stage]['mongo']['host']
+
+class BlogConst(object):
+    """定义常量类"""
+
+    pass

@@ -1,10 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>fleago 博客首页</title>
-</head>
-<body>
-首页尚未建设
-</body>
-</html>
+{% extends 'base.html' %}
+{% block base_styles %}
+    <link type="text/css" rel="stylesheet" href="/static/css/common.css" />
+{% endblock %}
+{% block base_content -%}
+    <div class="container-fluid">
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>题库名</th>
+                    <th>包含学科</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>小学</td>
+                <td>英语、数学</td>
+                <td>开发中</td>
+                <td>
+                    <a class="btn btn-primary" href="">进入</a>
+                </td>
+            </tr>
+            <tr>
+                <td>初中</td>
+                <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
+                <td>开发中</td>
+                <td>
+                    <a class="btn btn-primary" href="">进入</a>
+                </td>
+            </tr>
+            <tr>
+                <td>高中</td>
+                <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
+                <td>开发中</td>
+                <td>
+                    <a class="btn btn-primary" href="">进入</a>
+                </td>
+            </tr>
+            {% if current_user.could_doc_upload() or current_user.could_doc_audit() %}
+                <tr>
+                    <td>中学试卷收集</td>
+                    <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
+                    <td>开发中</td>
+                    <td>
+                        <a class="btn btn-primary" href="">进入</a>
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+{%- endblock %}

@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "Keyword.js",
+  "sourceRoot": "",
+  "sources": [
+    "Keyword.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAM;IACW,iBAAC,OAAD;MACT,IAAC,CAAA,OAAD,GAAW,EAAE,CAAC,UAAH,CAAiB,eAAH,GAAiB,OAAjB,GAA8B,EAA5C;IADF;;;;;;EAGjB,IAAC,CAAA,OAAD,GAAW;AAJX"
+}

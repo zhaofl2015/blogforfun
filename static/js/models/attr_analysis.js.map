@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "attr_analysis.js",
+  "sourceRoot": "",
+  "sources": [
+    "attr_analysis.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAM;;;4BACF,QAAA,GAAsB,EAAE,CAAC,UAAH,CAAc,EAAd;;4BACtB,oBAAA,GAAsB,MAAM,CAAC,IAAP,CAAY,qCAAZ;;;;;;EAE1B,IAAC,CAAA,aAAD,GAAiB;AAJjB"
+}

@@ -1,0 +1,304 @@
+{
+    "mappings": {
+        "main": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "all_content": {
+                    "type": "string",
+                    "indexAnalyzer": "ik",
+                    "searchAnalyzer": "ik_smart"
+                },
+                "description": {
+                    "type": "string",
+                    "indexAnalyzer": "ik",
+                    "searchAnalyzer": "ik_smart"
+                },
+                "seconds": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "difficulty_int": {
+                    "type": "integer"
+                },
+                "complex": {
+                    "type": "integer"
+                },
+                "not_fit_mobile": {
+                    "type": "integer"
+                },
+                "paper_ids": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "resource_ids": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "knowledge_points": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "tag_id": {
+                            "type": "integer"
+                        },
+                        "main": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "all_main_kps": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "tag_id": {
+                            "type": "integer"
+                        },
+                        "main": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "content_type_id": {
+                    "type": "integer"
+                },
+                "content_type_2_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "object",
+                    "properties": {
+                        "content": {
+                            "type": "string",
+                            "indexAnalyzer": "ik",
+                            "searchAnalyzer": "ik_smart"
+                        },
+                        "analysis": {
+                            "type": "string",
+                            "indexAnalyzer": "ik",
+                            "searchAnalyzer": "ik_smart"
+                        },
+                        "sub_contents": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "string",
+                                    "indexAnalyzer": "ik",
+                                    "searchAnalyzer": "ik_smart"
+                                },
+                                "sub_content_type_id": {
+                                    "type": "integer"
+                                },
+                                "options": {
+                                    "type": "object",
+                                    "properties": {
+                                        "option": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        }
+                                    }
+                                },
+                                "answers": {
+                                    "type": "nested",
+                                    "include_in_parent": true,
+                                    "properties": {
+                                        "answer": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        },
+                                        "rich_text": {
+                                            "type": "integer"
+                                        },
+                                        "score_percentage": {
+                                            "type": "integer"
+                                        },
+                                        "classification": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        },
+                                        "knowledge_points": {
+                                            "type": "nested",
+                                            "include_in_parent": true,
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "index": "not_analyzed"
+                                                },
+                                                "tag_id": {
+                                                    "type": "integer"
+                                                },
+                                                "main": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "analysis": {
+                                    "type": "string",
+                                    "indexAnalyzer": "ik",
+                                    "searchAnalyzer": "ik_smart"
+                                },
+                                "hide_option_number": {
+                                    "type": "integer"
+                                },
+                                "oral_dict": {
+                                    "type": "object",
+                                    "properties": {
+                                        "options": {
+                                            "type": "object",
+                                            "properties": {
+                                                "text": {
+                                                    "type": "string",
+                                                    "indexAnalyzer": "ik",
+                                                    "searchAnalyzer": "ik_smart"
+                                                },
+                                                "voice_texts": {
+                                                    "type": "string",
+                                                    "indexAnalyzer": "ik",
+                                                    "searchAnalyzer": "ik_smart"
+                                                },
+                                                "voice_text": {
+                                                    "type": "string",
+                                                    "indexAnalyzer": "ik",
+                                                    "searchAnalyzer": "ik_smart"
+                                                },
+                                                "sentence_patterns": {
+                                                    "type": "string",
+                                                    "indexAnalyzer": "ik",
+                                                    "searchAnalyzer": "ik_smart"
+                                                },
+                                                "seconds": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "indexAnalyzer": "ik",
+                                                    "searchAnalyzer": "ik_smart"
+                                                },
+                                                 "role_type": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "seconds": {
+                                            "type": "integer"
+                                        },
+                                        "voice_text": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        },
+                                        "variables": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        },
+                                        "sentence_patterns": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        },
+                                        "keywords": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        }
+                                    }
+                                },
+                                "analysis_list": {
+                                    "type": "nested",
+                                    "properties": {
+                                        "analysis_type_id": {
+                                            "type": "string",
+                                            "index": "not_analyzed"
+                                        },
+                                        "choice_ids": {
+                                            "type": "string",
+                                            "index": "not_analyzed"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "indexAnalyzer": "ik",
+                                            "searchAnalyzer": "ik_smart"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "created_at": {
+                    "type": "date"
+                },
+                "updated_at": {
+                    "type": "date"
+                },
+                "deleted_at": {
+                    "type": "date"
+                },
+                "creator_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "last_editor_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "rough_auditor_ids": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "final_auditor_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "ol_status": {
+                    "type": "integer"
+                },
+                "extras": {
+                    "type": "object",
+                    "properties": {
+                        "old_id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        }
+                    }
+                },
+                "books": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "book_id": {
+                            "type": "long"
+                        },
+                        "unit_id": {
+                            "type": "long"
+                        },
+                        "lesson_id": {
+                            "type": "long"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

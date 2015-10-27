@@ -12,16 +12,19 @@ from controllers.home import home_app
 
 app = Flask(__name__)
 app.register_blueprint(home_app)
+app.config['SECRET_KEY'] = 'simpleblog'
 
 # login配置
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = '/login'
+login_manager.login_message = ' Please log in to access this page.'
 
 # manager配置
 manager = Manager(app)
 manager.add_command("runserver", Server(threaded=True))
 
-if config.stage == 'production':
+if config.Config.stage == 'production':
     app.debug = False
 else:
     app.debug = True

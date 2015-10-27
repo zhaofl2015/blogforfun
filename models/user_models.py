@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from config import Config
 
 __author__ = 'fanglei.zhao'
 
@@ -7,7 +8,7 @@ from mongoengine import Document, StringField, BooleanField, IntField, ListField
 from utils.common_utils import now_lambda, format_datetime
 
 
-class User(Document):
+class BlogUser(Document):
     PV_PUBLISH = 1
     PV_DELETE = 2
     PV_COMMENT = 3
@@ -30,7 +31,7 @@ class User(Document):
     # 管理员缓存
     ADMIN = None
 
-    username = StringField(required=True, unique=True)
+    username = StringField(required=True, unique=True, primary_key=True)
     password = StringField(required=True)
     nickname = StringField(required=True)
     email = StringField()
@@ -46,8 +47,30 @@ class User(Document):
 
     meta = {
         'collection' : 'blog_user',
+        'db_alias' : Config.mongodb_blog_alias,
         'strict' : False
     }
+
+    @classmethod
+    def get_admin(cls):
+        if not cls.ADMIN:
+            cls.ADMIN = cls.objects.get(username='admin')
+        return cls.ADMIN
+
+    def is_authenticated(self):
+        return self.username is not None and self.is_active()
+
+    def is_active(self):
+        return self.status == 1
+
+    def is_anounymous(self):
+        return self.username is None
+
+    def get_id(self):
+        return self.username
+
+    def could_manage_user(self):
+        return self.is_admin
 
     def could_publish(self):
         return self.PV_PUBLISH in self.privileges
@@ -60,6 +83,15 @@ class User(Document):
 
     def could_comment(self):
         return self.PV_COMMENT in self.privileges
+
+    def validate_password(self, password):
+        return password == self.password
+
+    def set_password(self, password):
+        self.password = password
+
+    def privileges_text(self):
+        return ','.join([self.PRIVILEGES_DIC.get(privilege, 'notext') for privilege in self.privileges])
 
     def as_dict(self, with_permisson=False, cur_user=None):
         dic = dict(self.to_mongo())

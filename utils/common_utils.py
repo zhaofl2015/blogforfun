@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import datetime
+from datetime import datetime
 
 __author__ = 'fleago'
 

@@ -1,0 +1,80 @@
+<style type="text/css">
+    #history .table>tbody>tr>td {
+        border-top: none
+    }
+</style>
+<div class="modal fade" id="operation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 453px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">其他反馈</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="form-group" style="margin-top: 7px;">
+                                <label class="control-label">资源类型:</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="dropdown">
+                                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: type_text() + ' <span class=\'caret\'></span>'"></a>
+                                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                                        <!-- ko foreach: types -->
+                                        <li><a href="javascript:void(0);" data-bind="text: $data.resource_type[1], click: $parent.setType.bind($data, $data.resource_type[0], $data.resource_type[1])"></a></li>
+                                        <!-- /ko -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;">
+                            <div class="form-group" style="margin-top: 7px;">
+                                <label class="control-label">资源等级:</label>
+                            </div>
+                        </td>
+                        <td style="width: auto;">
+                            <!-- ko foreach: levels -->
+                            <label class="checkbox-inline col-md-5" style="margin-left: 10px;">
+                                <input type="checkbox" data-bind="value: $data[0], checked: $parent.form_levels">
+                                <!-- ko text: $data[1]--><!-- /ko -->
+                            </label>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label" style="margin-top: 7px;">问题反馈:</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="dropdown">
+                                    <div class="dropdown">
+                                        <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: feedback() + ' <span class=\'caret\'></span>'"></a>
+                                        <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                                            <!-- ko foreach: feedbacks -->
+                                            <li><a href="javascript:void(0);" data-bind="text: $data, click: $parent.setFeedback"></a></li>
+                                            <!-- /ko -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- ko ifnot: feedback_disable -->
+                <textarea name="test" id="test" cols="57" rows="5" data-bind="value: feedback_text"></textarea>
+                <!-- /ko -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-bind="click: submit">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

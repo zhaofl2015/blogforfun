@@ -1,0 +1,159 @@
+<style type="text/css">
+    #editor .table td { border-top: none; }
+    #editor .table tr>td:first-child {
+        width: 90px;
+    }
+</style>
+<div class="modal fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 453px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">取消发布</h4>
+            </div>
+            <div class="modal-body">
+                <label class="control-label" style="margin-top: 7px;">备注:</label>
+                <textarea name="test" id="test" cols="57" rows="5" data-bind="value: discription"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" data-bind="click: submit">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: cancel">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 453px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">系统提示</h4>
+            </div>
+            <div class="modal-body">
+                <p data-bind="text: message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" data-bind="click: deleted">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: cancel">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">资源上传</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td><label class="control-label">上传资源:</label></td>
+                        <td>
+                            <div class="form-group">
+                                <div class="files" data-bind="if: files().length > 0, visible: files().length > 0">
+                                    <div class="panel panel-default">
+                                        <table class="table">
+                                            <tbody data-bind="foreach: files">
+                                                <tr>
+                                                    <td data-bind="text: filename"></td>
+                                                    <td style="width: 50px;">
+                                                        <a class="glyphicon glyphicon-remove" data-bind="click: function(){ $parent.files.remove(this); }"></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>上传资源</span>
+                                    <input id="fileupload" type="file" name="files[]" multiple>
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <div id="progress" class="progress">
+                                    <div class="progress-bar progress-bar-success"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">资源类型:</label></td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: type_text() + ' <span class=\'caret\'></span>'"></a>
+                                <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                                    <!-- ko foreach: types -->
+                                    <li><a href="javascript:void(0);" data-bind="text: $data.resource_type[1], click: $parent.setType.bind($data, $data.resource_type[0], $data.resource_type[1])"></a></li>
+                                    <!-- /ko -->
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">教材:</label></td>
+                        <td>
+                            <input type="text" class="form-control bookDialog" placeholder="选择书本" data-bind="value: book" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">地区:</label></td>
+                        <td>
+                            <input type="text" data-bind="value: region" class="form-control regionDialog" placeholder="关联地区" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">年份:</label></td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="请输入资源年份" data-bind="value: year"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label">资源等级:</label>
+                        </td>
+                        <td>
+                            <!-- ko foreach: levels -->
+                            <label class="checkbox-inline col-md-5" style="margin-left: 10px;">
+                                <input type="checkbox" data-bind="value: $data[0], checked: $parent.form_levels">
+                                <!-- ko text: $data[1]--><!-- /ko -->
+                            </label>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">资源描述:</label></td>
+                        <td>
+                           <textarea cols="57" rows="5" data-bind="value: resource_discription"></textarea> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">园丁豆:</label></td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: gold_text() + ' <span class=\'caret\'></span>'"></a>
+                                <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                                    <!-- ko foreach: gold_list -->
+                                    <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setGold.bind($data, $data[0], $data[1])"></a></li>
+                                    <!-- /ko -->
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label">标签:</label></td>
+                        <td>
+                            <select class="dialog_download_multiple" data-bind="options: tags, optionsValue: '0', optionsText: '1', selectedOptions: tag, multiselect: true" multiple="multiple"></select>
+                        </td>
+                    </tr>
+                </table> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" data-bind="click: upload_files">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: cancel">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+{
+    "mappings": {
+        "main": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "usages": {
+                    "type": "integer"
+                },
+                "paper_types": {
+                    "type": "integer"
+                },
+                "resource_index": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "knowledge_points": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "tag_id": {
+                            "type": "integer"
+                        },
+                        "main": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "content_type_id": {
+                    "type": "integer"
+                },
+                "content_type_2_id": {
+                    "type": "integer"
+                },
+                "difficulty_int": {
+                    "type": "integer"
+                },
+                "question_type": {
+                    "type": "integer"
+                },
+                "writing_styles": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}为了打发时间{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit"> 
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="/static/3rd/bootstrap/css/bootstrap.min.css" />
+    {% block base_styles %}{% endblock %}
+    {% block priority_js %}{% endblock %}
+</head>
+<body>
+    <a name="top"></a>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- LOGO -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">切换</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">一起作业内容库</a>
+            </div>
+
+            <!-- 菜单 -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- 左侧菜单 -->
+                {% block nav_left %}{% endblock %}
+                <!-- 右侧菜单 -->
+                <ul class="nav navbar-nav navbar-right">
+                    {% if g.current_user.is_authenticated() %}
+                        <ul class="nav navbar-nav">
+                            <li style="padding-right: 150px;"><a target="_blank" href="/similar/index" style="color: #F8F8F8;">类题</a></li>
+                        </ul>
+                        {% if current_user.could_manage_user() %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="/users">用户管理</a></li>
+                        </ul>
+                        {% endif %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="">好友连接</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li><a href="">我的博客</a></li>
+                        </ul>
+                        {% if not g.current_user.is_admin %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="">工作统计</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="">用户</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="">查重</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ g.current_user.username }} ({{ g.current_user.realname }})<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a>{{ g.current_user.privileges_text() }}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/users/edit?user_id={{ g.current_user.id }}">修改个人信息</a></li>
+                                <li><a href="/logout">退出系统</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="/login">登录</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主体 -->
+    {% block base_content -%}{%- endblock %}
+    <div class="totop"><a href="#top"><i class="glyphicon glyphicon-chevron-up"></i></a></div>
+    <!-- 脚本 -->
+    <script type="text/javascript" src="/static/3rd/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/3rd/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/3rd/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+    <script type="text/javascript" src="/static/3rd/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    {% block base_scripts %}{% endblock %}
+</body>
+</html>

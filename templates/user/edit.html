@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "macros/wtform.html" as wtf %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block base_styles %}
+    <link type="text/css" rel="stylesheet" href="/static/css/common.css" />
+{% endblock %}
+
+{% block base_content %}
+    <div class="container-fluid" style="max-width: 800px;">
+        <div class="page-header">
+            <h3>{{ self.title() }}</h3>
+        </div>
+        {% include "common/show_flashed_messages.html" %}
+        {{ wtf.quick_form(form, method='post', form_id='userEdit') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% macro resource(js=[], css=[]) %}
+    {%- for name in js -%}
+        {% if name == 'base' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/base.js') }}"></script>
+        {% elif name == 'common' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/common.js') }}"></script>
+        {% elif name == 'xx' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/xx.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/handlers/datepicker.js') }}') }}"></script>
+        {% elif name == 'zhongxue' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/zhongxue.js') }}"></script>
+        {% elif name == 'require'  %}
+{#            <script type="text/javascript" data-main="{{ g.make_url('static', filename='js/require_config.js') }}" src="{{ g.make_url('static', filename='lib/require.js') }}"></script>#}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/require.js') }}"></script>
+        {% elif name == 'require_config'  %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/require_config.js') }}"></script>
+        {% elif name == 'jquery' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jquery/jquery.min.js') }}"></script>
+        {% elif name == 'jquery-ui' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jquery-ui/jquery-ui.min.js') }}"></script>
+        {% elif name == 'ko' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/knockout-master/dist/knockout.debug.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/knockout.mapping/knockout.mapping.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/knockout-switch-case/knockout-switch-case.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/koPatch/beforeSubscribe.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/koPatch/onecBeforeSubscribe.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/koPatch/onecSubscribe.js') }}"></script>
+        {% elif name == 'postal' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/postal.js/postal.js') }}"></script>
+        {% elif name == 'summy' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/sammy/sammy.js') }}"></script>
+        {% elif name == 'underscore' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/underscore.min.js') }}"></script>
+        {% elif name == 'ueditor' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/ueditor/dist/utf8-php/ueditor.config.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/ueditor/dist/utf8-php/ueditor.all.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/imageInputForEditor.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/setBlockForEditor.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/mathEqEditor.js') }}"></script>
+        {% elif name == 'jcrop' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/jquery.Jcrop/js/jquery.Jcrop.min.js') }}"></script>
+        {% elif name == 'fileupload' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/jQuery.File.Upload/js/vendor/jquery.ui.widget.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/jQuery.File.Upload/js/jquery.fileupload.js') }}"></script>
+        {% elif name == 'artTemplate' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/artTemplate/template-native.min.js') }}"></script>
+        {% elif name == 'M_choose_paper' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Choose_paper.js') }}"></script>
+        {% elif name == 'M_get_papers' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Get_papers.js') }}"></script>
+        {% elif name == 'attr_papers' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_paper.js') }}"></script>
+        {% elif name == 'H_editorinput' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/handlers/editorinput.js') }}"></script>
+        {% elif name == 't_initEditor' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/initEditor.js') }}"></script>
+        {% elif name == 't_question_control' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/tools/questionControl.js') }}"></script>
+        {% elif name == 'toastr' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/toastr/toastr.js') }}"></script>
+        {% elif name == 'bootstrap-tagsinput' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+        {% elif name == 'knowledge_point_tree' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='lib/toastr/toastr.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jstree/jstree.min.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/selectize/js/selectize.min.js') }}"></script>
+        {% elif name == 'selectize' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/selectize/js/selectize.min.js') }}"></script>
+        {% elif name == 'popbox' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jquery.popbox/jquery.popbox.js') }}"></script>
+        {% elif name == 'Models' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/SuperClass.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/BigDady.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Answer.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Voice.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Option.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Paper.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Point.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Resource.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Role.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_subject.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_resource.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_roles.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_content_type.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_difficulty.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_point.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_paper.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_analysis.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/attr_workbook_content.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Question.js') }}"></script>
+        {% elif name == 'oral_attr' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Variable.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/SentencePattern.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Keyword.js') }}"></script>
+        {% elif name == 'workbooklist' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/workbook.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/search.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/editworkbook.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/workbookList.js') }}"></script>
+        {% elif name == 'workbookcatalog' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/workbook.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/catalog.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/editcatalog.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/catalogmenu.js') }}"></script>
+        {% elif name == 'SearchBook' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/workbook/SearchBook.js') }}"></script>
+        {% elif name == 'M_paper' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Paper.js') }}"></script>
+        {% elif name == 'M_Question' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='js/models/Question.js') }}"></script>
+        {% elif name == 'select_tree' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jstree/jstree.min.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/selectize/js/selectize.min.js') }}"></script>
+        {% elif name == 't_clickSort' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/jquery.clickSort/jquery.clickSort.js') }}"></script>
+        {% elif name == 'zTree' %}
+            <script type="text/javascript" src="{{ g.make_url('static', filename='3rd/zTree_v3/js/jquery.ztree.all-3.5.min.js') }}"></script>
+        {% endif %}
+    {%- endfor -%}
+
+    {# css #}
+    {%- for name in css -%}
+        {% if name == 'base' %}
+        {% elif name == 'common' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='css/common.css') }}">
+        {% elif name == 'zhongxue' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='css/zhongxue.css') }}">
+        {% elif name == 'jquery-ui' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='3rd/jquery-ui/jquery-ui.min.css') }}">
+        {% elif name == 'jcrop' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='lib/jquery.Jcrop/css/jquery.Jcrop.min.css') }}">
+        {% elif name == 'fileupload' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='lib/jQuery.File.Upload/css/jquery.fileupload.css') }}">
+        {% elif name == 'toastr' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='lib/toastr/toastr.css') }}">
+        {% elif name == 'bootstrap-tagsinput' %}
+            <link rel="stylesheet" type="text/css" href="{{ g.make_url('static', filename='3rd/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+        {% elif name == 'knowledge_point_tree' %}
+            <link type="text/css" rel="stylesheet" href="{{ g.make_url('static', filename='3rd/jstree/themes/default/style.min.css') }}"/>
+            <link type="text/css" rel="stylesheet" href="{{ g.make_url('static', filename='3rd/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"/>
+            <link type="text/css" rel="stylesheet" href="{{ g.make_url('static', filename='3rd/selectize/css/selectize.bootstrap3.css') }}"/>
+        {% elif name == 'selectize' %}
+            <link type="text/css" rel="stylesheet" href="{{ g.make_url('static', filename='3rd/selectize/css/selectize.bootstrap3.css') }}"/>
+        {% elif name == 'popbox' %}
+            <link rel="stylesheet" href="{{ g.make_url('static', filename='3rd/jquery.popbox/jquery.popbox.css') }}">
+        {% elif name == 'zTree' %}
+            <link rel="stylesheet" href="{{ g.make_url('static', filename='3rd/zTree_v3/css/zTreeStyle/zTreeStyle.css') }}">
+        {% endif %}
+    {%- endfor -%}
+{% endmacro %}

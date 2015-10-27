@@ -1,0 +1,65 @@
+{
+    "mappings": {
+        "main": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "knowledge_points": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "knowledge_points_b": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "content_type_id": {
+                    "type": "integer"
+                },
+                "content_type_2_id": {
+                    "type": "integer"
+                },
+                "difficulty_int": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "regions": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "province_id": {
+                            "type": "integer"
+                        },
+                        "city_id": {
+                            "type": "integer"
+                        },
+                        "region_id": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "not_fit_mobile": {
+                    "type": "integer"
+                },
+                "books": {
+                    "type": "nested",
+                    "include_in_parent": true,
+                    "properties": {
+                        "book_id": {
+                            "type": "long"
+                        },
+                        "unit_id": {
+                            "type": "long"
+                        },
+                        "lesson_id": {
+                            "type": "long"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

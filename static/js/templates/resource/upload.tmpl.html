@@ -1,0 +1,100 @@
+<style>
+.bootstrap-tagsinput { margin-bottom: auto; }
+</style>
+<div class="row bg-warning" style="padding: 8px 12px 8px 0px; margin: 20px 20px; border: 1px solid #CCC; border-radius: 8px;">
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="col-sm-2">
+                <input type="text" class="form-control" placeholder="资源ID" data-bind="value: resource_id"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: type_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: types -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data.resource_type[1], click: $parent.setType.bind($data, $data.resource_type[0], $data.resource_type[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <div class="dropdown">
+                    <a class="btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-bind="html: status_text() + ' <span class=\'caret\'></span>'"></a>
+                    <ul class="dropdown-menu" aria-labelledby="roughAuditBtn">
+                        <!-- ko foreach: statuses -->
+                        <li><a href="javascript:void(0);" data-bind="text: $data[1], click: $parent.setStatus.bind($data, $data[0], $data[1])"></a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control bookDialog" placeholder="选择书本" data-bind="value: book" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="上传人ID" data-bind="value: upload_id"/>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="从哪天" data-bind="datepicker: from_date, value: from_date, valueUpdate: 'keyup'" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="到哪天" data-bind="datepicker: to_date, value: to_date, valueUpdate: 'keyup'" />
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <button class="btn btn-primary" data-bind="click: searchSource.bind($data, 1)">搜索</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row" style="margin: auto;">
+    <div class="paginationContainer">{#分页显示区域#}</div> 
+
+    <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr class="active">
+                    <th>ID</th>
+                    <th>上传时间</th>
+                    <th>上传人ID</th>
+                    <th>上传人学校</th>
+                    <th>资源名称</th>
+                    <th>教材</th>
+                    <th>类型</th>
+                    <th>等级</th>
+                    <th>问题反馈</th>
+                    <th>处理人ID</th>
+                    <th>处理时间</th>
+                    <th>状态</th>
+                    <th style="width: 170px;">操作</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: upload_list">
+                <tr>
+                    <td data-bind="text: _id"></td>
+                    <td data-bind="text: created_at"></td>
+                    <td data-bind="text: creator_id"></td>
+                    <td data-bind="text: school_name"></td>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: book_node.text"></td>
+                    <td data-bind="text: resource_type"></td>
+                    <td data-bind="text: $parent.arrayToText(level(), 'String')"></td>
+                    <td data-bind="text: feedback"></td>
+                    <td data-bind="text: operator_id"></td>
+                    <td data-bind="text: updated_at"></td>
+                    <td data-bind="text: status_text"></td>
+                    <td>
+                        <a type='button' target="_blank" class='btn btn-info btn-sm' data-bind='attr: { href: url }, visible: could_download'>下载</a>
+                        <button type='button' class='btn btn-success btn-sm' data-bind='click: $parent.check, visible: could_find_duplicate'>查重</button>
+                        <button type='button' class='btn btn-warning btn-sm' data-bind='click: $parent.operation, visible: could_operate'>处理</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>    
+
+    <div class="paginationContainer">{#分页显示区域#}</div> 
+</div>
+<div data-bind="module: dialogs"></div>

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% import "macros/wtform.html" as wtf %}
+{% block title %}用户管理{% endblock %}
+{% block base_styles %}
+    <link type="text/css" rel="stylesheet" href="/static/css/common.css" />
+{% endblock %}
+
+{% block base_content %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3>{{ self.title() }}</h3>
+        </div>
+        {{ wtf.quick_form(form, method='post', form_id='userFilter', form_type='inline') }}
+        <div class="paginationContainer"></div>
+        <div class="row margin-bottom"><div class="col-md-12"><a class="btn btn-success btn-xs" href="/users/edit">添加用户</a></div></div>
+        <div id="userList"></div>
+        <div class="paginationContainer"></div>
+    </div>
+
+{% endblock %}
+
+{% block base_scripts %}
+    <script id="userListTpl" type="text/html">
+        <table class="table table-bordered table-hover table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>昵称</th>
+                    <th>权限</th>
+                    <th>email</th>
+                    <th>最后登录时间</th>
+                    <th>最后登录IP</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% for (var i=0; i < users.length; i++) {
+                var user = users[i];
+            %>
+                <tr data-id="<%=user._id%>">
+                    <td><%=user.username%></td>
+                    <td><%=user.nickname%></td>
+                    <td><%=user.privileges_text%></td>
+                    <td><%=user.email%></td>
+                    <td><%=user.last_login_time_display%></td>
+                    <td><%=user.last_login_ip%></td>
+                    <td><%=user.status_display%></td>
+                    <td>
+                        <% if (user.could_modify) { %>
+                            <a href="/users/edit?user_id=<%=user._id%>" class="btn btn-primary btn-xs">修改</a>
+                        <%}%>
+                    </td>
+                </tr>
+            <%}%>
+            </tbody>
+        </table>
+    </script>
+    <script type="text/javascript" src="/static/3rd/artTemplate/template-native.min.js"></script>
+    <script type="text/javascript" src="/static/js/common.js"></script>
+    <script type="text/javascript">
+        var UsersAdminMod = (function(){
+            var settings = {
+                form: $('#userFilter'),
+                userList: $('#userList')
+            };
+            var toPage = function(page){
+                var queryDict = FormUtils.formToDict(settings.form);
+                queryDict['page'] = page;
+
+                settings.userList.empty();
+                commonAjax('/users', queryDict, function(data){
+                    var usersHtml = template('userListTpl', data);
+                    settings.userList.append(usersHtml);
+                    // 生成分页HTML
+                    PaginationMod.renderPagination(data.page, data.per_page, data.total, 'UsersAdminMod.toPage');
+                });
+            };
+            var init = function(){
+                settings.form.submit(function(){
+                    toPage(1);
+                    return false;
+                });
+                toPage(1);
+            };
+            return {
+                settings: settings,
+                init: init,
+                toPage: toPage
+            }
+        })();
+
+        $(function(){
+            UsersAdminMod.init();
+        });
+    </script>
+{% endblock %}

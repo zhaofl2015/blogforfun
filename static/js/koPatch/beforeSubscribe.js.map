@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "beforeSubscribe.js",
+  "sourceRoot": "",
+  "sources": [
+    "beforeSubscribe.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,EAAE,CAAC,UAAU,CAAC,EAAE,CAAC,eAAjB,GAAmC,SAAC,QAAD,EAAW,MAAX;AAC/B,QAAA;IAAA,SAAA,GAAY;IAEZ,IAAC,CAAC,SAAF,CAAY,SAAC,QAAD;MACR,SAAA,GAAY;IADJ,CAAZ,EAGE,IAHF,EAGQ,cAHR;WAKA,IAAC,CAAC,SAAF,CAAY,SAAC,QAAD;MACR,QAAQ,CAAC,IAAT,CAAc,MAAd,EAAsB,QAAtB,EAAgC,SAAhC;IADQ,CAAZ;EAR+B;AAAnC"
+}
