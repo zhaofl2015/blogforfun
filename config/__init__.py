@@ -8,7 +8,7 @@ __author__ = 'fleago'
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.yaml')
 yaml = pyaml.yaml.safe_load(open(config_path))
 
-class Config(object):
+class BlogConfig(object):
     """配置"""
 
     SALT = 'justforfun'

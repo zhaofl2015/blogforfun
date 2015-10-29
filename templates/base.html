@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">一起作业内容库</a>
+                <a class="navbar-brand" href="/">一个新的博客</a>
             </div>
 
             <!-- 菜单 -->
@@ -31,7 +31,7 @@
                 {% block nav_left %}{% endblock %}
                 <!-- 右侧菜单 -->
                 <ul class="nav navbar-nav navbar-right">
-                    {% if g.current_user.is_authenticated() %}
+                    {% if g.current_user.is_authenticated %}
                         <ul class="nav navbar-nav">
                             <li style="padding-right: 150px;"><a target="_blank" href="/similar/index" style="color: #F8F8F8;">类题</a></li>
                         </ul>

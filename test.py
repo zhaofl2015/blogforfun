@@ -6,7 +6,7 @@ from utils.common_utils import now_lambda
 __author__ = 'fleago'
 
 from mongoengine import connect
-from config import Config
+from config import BlogConfig
 
 
 
@@ -29,7 +29,8 @@ def test_user():
     # user.save()
     user = BlogUser.objects().first()
     print BlogUser.objects().count()
-    print user.username
+    print user.username, user.password, user.nickname, user.username
+    # print BlogUser.objects(username='admin').first().username
 
 
 if __name__ == '__main__':

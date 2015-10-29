@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from config import Config
+from config import BlogConfig
 
 __author__ = 'fanglei.zhao'
 
@@ -31,7 +31,7 @@ class BlogUser(Document):
     # 管理员缓存
     ADMIN = None
 
-    username = StringField(required=True, unique=True, primary_key=True)
+    username = StringField(required=True, unique=True)
     password = StringField(required=True)
     nickname = StringField(required=True)
     email = StringField()
@@ -47,7 +47,7 @@ class BlogUser(Document):
 
     meta = {
         'collection' : 'blog_user',
-        'db_alias' : Config.mongodb_blog_alias,
+        'db_alias' : BlogConfig.mongodb_blog_alias,
         'strict' : False
     }
 

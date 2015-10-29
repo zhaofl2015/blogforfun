@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 # import json
 # from controllers.regular import FilterForm
 import re
+from config import BlogConfig
 from models.user_models import BlogUser
 from  . import *
 from utils.common_utils import now_lambda
@@ -37,9 +38,9 @@ def login():
         user.last_login_time = now_lambda()
         user.last_login_ip = request.remote_addr
         user.save()
-        url = Config.stage == 'production' and 'http://online.mode/' or '/'
+        url = BlogConfig.stage == 'production' and 'http://online.mode/' or '/'
         return redirect(request.args.get("next") or url)
-    return render_template("users/login.html", msg='', stage=Config.stage)
+    return render_template("users/login.html", msg='', stage=BlogConfig.stage)
 
 @users_app.route("/logout")
 def logout():

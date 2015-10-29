@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from controllers.user import users_app
+from utils.common_utils import version_url
 
 __author__ = 'fleago'
 
@@ -12,6 +14,7 @@ from controllers.home import home_app
 
 app = Flask(__name__)
 app.register_blueprint(home_app)
+app.register_blueprint(users_app)
 app.config['SECRET_KEY'] = 'simpleblog'
 
 # login配置
@@ -24,13 +27,15 @@ login_manager.login_message = ' Please log in to access this page.'
 manager = Manager(app)
 manager.add_command("runserver", Server(threaded=True))
 
-if config.Config.stage == 'production':
+if config.BlogConfig.stage == 'production':
     app.debug = False
 else:
     app.debug = True
 
 @app.before_request
 def before_request():
+    g.current_user = current_user
+    g.make_url = version_url
     pass
 
 @app.teardown_request
