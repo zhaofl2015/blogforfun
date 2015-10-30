@@ -65,7 +65,7 @@ def _could_modify(user):
 
 class FilterForm(Form):
     username = StringField('用户名', description='用户名')
-    realname = StringField('真实姓名', description='真实姓名')
+    nickname = StringField('昵称', description='昵称')
     privilege = SelectField('权限', coerce=int, default=-1, choices=[(-1, '-权限-')] + BlogUser.PRIVILEGES)
     status = SelectField('状态', coerce=int, choices=[(1, '启用'), (0, '禁用')])
     submit = SubmitField('搜索')
@@ -85,7 +85,7 @@ def index():
         query_set = BlogUser.objects(status=form.status.data, username__ne='admin')
         if form.username.data:
             query_set = query_set.filter(username__contains=form.username.data)
-        if form.realname.data:
+        if form.nickname.data:
             query_set = query_set.filter(realname__contains=form.realname.data)
         if form.privilege.data != -1:
             query_set = query_set.filter(privileges=form.privilege.data)
@@ -166,12 +166,12 @@ def edit():
                 flash('密码不能为空')
             elif mode == 'create' and BlogUser.objects(username=form.username.data).limit(1):
                 flash('用户名已被占用')
-            elif form.password.data and (len(form.password.data) < 8 or
-                                         re.match(r'^\d+$', form.password.data) or
-                                         re.match(r'^[a-zA-Z]+$', form.password.data)):
-                flash('密码需要超过8位，且同时包括字母和数字')
+            # elif form.password.data and (len(form.password.data) < 8 or
+            #                              re.match(r'^\d+$', form.password.data) or
+            #                              re.match(r'^[a-zA-Z]+$', form.password.data)):
+            #     flash('密码需要超过8位，且同时包括字母和数字')
             else:
-                user.realname = form.nickname.data
+                user.nickname = form.nickname.data
                 user.email = form.email.data
                 if mode != 'edit_self':
                     user.username = form.username.data
