@@ -10,7 +10,7 @@ from models.user_models import BlogUser
 from  . import *
 from utils.common_utils import now_lambda
 
-__author__ = 'fanglei.zhao'
+__author__ = 'fleago'
 
 
 users_app = Blueprint('users', __name__)

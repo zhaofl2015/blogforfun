@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from controllers.user import users_app
+from controllers.user import users_app, login_manager
 from utils.common_utils import version_url
 
 __author__ = 'fleago'
@@ -18,10 +18,10 @@ app.register_blueprint(users_app)
 app.config['SECRET_KEY'] = 'simpleblog'
 
 # login配置
-login_manager = LoginManager()
+# login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = '/login'
-login_manager.login_message = ' Please log in to access this page.'
+# login_manager.login_view = '/login'
+# login_manager.login_message = ' Please log in to access this page.'
 
 # manager配置
 manager = Manager(app)

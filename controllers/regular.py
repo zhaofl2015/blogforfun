@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from flask.ext.wtf.recaptcha import validators
 
-__author__ = 'fanglei.zhao'
+__author__ = 'fleago'
 
 from wtforms import  Form, SelectField, DateField, SubmitField
 

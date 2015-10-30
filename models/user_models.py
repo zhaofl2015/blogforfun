@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from config import BlogConfig
 
-__author__ = 'fanglei.zhao'
+__author__ = 'fleago'
 
 from mongoengine import Document, StringField, BooleanField, IntField, ListField, DateTimeField
 from utils.common_utils import now_lambda, format_datetime

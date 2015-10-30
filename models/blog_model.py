@@ -3,7 +3,6 @@
 
 
 """
-@version: ??
 @author: fleago
 @license: github Licence 
 @contact: fleago@163.com

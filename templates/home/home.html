@@ -7,47 +7,46 @@
         <table class="table table-bordered table-striped table-hover table-condensed">
             <thead>
                 <tr>
-                    <th>题库名</th>
-                    <th>包含学科</th>
-                    <th>状态</th>
+                    <th>表头一</th>
+                    <th>表头二</th>
+                    <th>表头三</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tbody>
             <tr>
-                <td>小学</td>
-                <td>英语、数学</td>
-                <td>开发中</td>
+                <td>内容1</td>
+                <td>内容2</td>
+                <td>内容3</td>
                 <td>
                     <a class="btn btn-primary" href="">进入</a>
                 </td>
             </tr>
             <tr>
-                <td>初中</td>
-                <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
-                <td>开发中</td>
+                <td>内容四</td>
+                <td>内容五</td>
+                <td>内容六</td>
                 <td>
                     <a class="btn btn-primary" href="">进入</a>
                 </td>
             </tr>
             <tr>
-                <td>高中</td>
-                <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
-                <td>开发中</td>
+                <td>内容7</td>
+                <td>内容8</td>
+                <td>内容9</td>
                 <td>
                     <a class="btn btn-primary" href="">进入</a>
                 </td>
             </tr>
-            {% if current_user.could_doc_upload() or current_user.could_doc_audit() %}
+
                 <tr>
-                    <td>中学试卷收集</td>
-                    <td>语文、数学、英语、物理、化学、生物、政治、地理、历史</td>
-                    <td>开发中</td>
+                    <td>内容11</td>
+                    <td>内容12</td>
+                    <td>内容13</td>
                     <td>
                         <a class="btn btn-primary" href="">进入</a>
                     </td>
                 </tr>
-            {% endif %}
             </tbody>
         </table>
     </div>
