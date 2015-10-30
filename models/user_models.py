@@ -4,8 +4,9 @@ from config import BlogConfig
 
 __author__ = 'fleago'
 
-from mongoengine import Document, StringField, BooleanField, IntField, ListField, DateTimeField
+# from mongoengine import Document, StringField, BooleanField, IntField, ListField, DateTimeField
 from utils.common_utils import now_lambda, format_datetime
+from . import *
 
 
 class BlogUser(Document):
@@ -98,3 +99,16 @@ class BlogUser(Document):
         dic['create_time'] = format_datetime(self.created_at, '%Y-%m-%d %H:%M:%S')
         dic['update_time'] = format_datetime(self.updated_at, '%Y-%m-%d %H:%M:%S')
         dic['delete_time'] = format_datetime(self.deleted_at, '%Y-%m-%d %H:%M:%S')
+
+    def as_json(self):
+        return {
+            'username' : self.username,
+            'nickname' : self.nickname,
+            '_id' : unicode(self['id']),
+            'email' : self.email,
+            'privileges_text' : self.privileges_text(),
+            'last_login_time_display' : format_datetime(self.last_login_time),
+            'last_login_ip' : self.last_login_ip,
+            'status' : self.status,
+            'status_display' : self.get_status_display()
+        }

@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-# from flask import Blueprint, request, render_template, abort
-# from flask.ext.login import LoginManager, login_required, current_user
-# import json
-# from controllers.regular import FilterForm
-import re
+
 from config import BlogConfig
 from models.user_models import BlogUser
 from  . import *
@@ -86,7 +82,7 @@ def index():
         if form.username.data:
             query_set = query_set.filter(username__contains=form.username.data)
         if form.nickname.data:
-            query_set = query_set.filter(realname__contains=form.realname.data)
+            query_set = query_set.filter(nickname__contains=form.nickname.data)
         if form.privilege.data != -1:
             query_set = query_set.filter(privileges=form.privilege.data)
 

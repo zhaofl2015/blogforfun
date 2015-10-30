@@ -46,20 +46,20 @@
                         <ul class="nav navbar-nav">
                             <li><a href="">我的博客</a></li>
                         </ul>
-                        {% if not g.current_user.is_admin %}
+                        {% if g.current_user.is_admin %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="">工作统计</a></li>
+                                    <li><a href="">访问记录</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="">用户</a></li>
+                                    <li><a href="/users">用户</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="">查重</a></li>
+                                    <li><a href="">other</a></li>
                                 </ul>
                             </li>
                         {% endif %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ g.current_user.username }} ({{ g.current_user.realname }})<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ g.current_user.username }} ({{ g.current_user.nickname }})<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a>{{ g.current_user.privileges_text() }}</a></li>
                                 <li class="divider"></li>

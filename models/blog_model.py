@@ -12,8 +12,8 @@
 @time: 2015/10/25 21:35
 """
 from bson import ObjectId
-from mongoengine import *
 from utils.common_utils import now_lambda
+from . import *
 
 
 class Blog(Document):

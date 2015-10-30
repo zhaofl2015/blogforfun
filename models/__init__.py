@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from mongoengine import connect
+from mongoengine import *
 from config import BlogConfig
+from flask.ext.mongoengine import Document  # 覆盖mongoengine的Document，使用pagination功能
 
 
 __author__ = 'fleago'

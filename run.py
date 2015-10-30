@@ -11,6 +11,7 @@ from flask.ext.login import current_user, LoginManager
 import config
 
 from controllers.home import home_app
+from controllers.user import users_app
 
 app = Flask(__name__)
 app.register_blueprint(home_app)
