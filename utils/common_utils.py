@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 import os
 from flask import url_for
+import re
 
 __author__ = 'fleago'
 
@@ -31,3 +32,9 @@ def version_url(endpoint, **values):
 def get_path_by_root_path(path_name):
     # 根据项目根目录定位，支持从不同目录启动脚本
     return os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), path_name))
+
+
+def clean_all_html(content):
+    dr = re.compile(r'<[^>]+>', re.S)
+    dd = dr.sub('', content)
+    return dd

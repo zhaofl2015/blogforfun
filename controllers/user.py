@@ -38,6 +38,7 @@ def login():
         return redirect(request.args.get("next") or url)
     return render_template("users/login.html", msg='', stage=BlogConfig.stage)
 
+
 @users_app.route("/logout")
 def logout():
     logout_user()

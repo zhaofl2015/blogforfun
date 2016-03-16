@@ -23,7 +23,12 @@ class BlogConfig(object):
     mongodb_blog_alias = mongodb_blog_name
     mongodb_user_name = mongodb_user_name
 
+    mongodb_resource_name = "simpleblog"
+    mongodb_resource_alias = mongodb_resource_name
+
+    mongodb_gfs_resource_host = yaml[stage]['mongo-gfs']['host']
     mongodb_host = yaml[stage]['mongo']['host']
+
 
 class BlogConst(object):
     """定义常量类"""

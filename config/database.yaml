@@ -1,11 +1,11 @@
 stage: development
 production:
   mongo:
-    host: 192.168.150.49:27017
+    host: 127.0.0.1:27017
   mongo-gfs:
-    host: 192.168.150.49:27107
+    host: 10.200.4.54:27107
 development:
   mongo:
-    host: 192.168.150.49:27017
+    host: 127.0.0.1:27017
   mongo-gfs:
-    host: 192.168.150.49:27107
+    host: 127.0.0.1:27107

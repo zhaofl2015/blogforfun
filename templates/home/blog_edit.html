@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block base_content %}
+<script type="text/javascript" src="static/ckeditor/ckeditor.js"></script>
+<div class="container">
+    <form>
+        <fieldset>
+            <div id="legend" class="">
+                <legend class="">编辑日志</legend>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label"></label>
+
+                <div class="controls">
+                    {% if blog %}
+                    <input hidden="hidden" type="text" id="id" value="{{blog.id}}">
+                    <input type="text" placeholder="输入标题" id="title" class="input-xlarge" value="{{blog.title}}">
+                    {% else %}
+                    <input hidden="hidden" type="text" id="id" value="">
+                    <input type="text" placeholder="输入标题" id="title" class="input-xlarge">
+                    {% endif %}
+
+                    <p class="help-block"></p>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Textarea -->
+                <label class="control-label"></label>
+
+                <div class="controls">
+                    <div class="textarea">
+                        {% if blog %}
+                        <textarea type="" id="content" name="content" style="margin: 0px; width: 272px; height: 290px;">{{blog.content|safe}}</textarea>
+                        {% else %}
+                        <textarea type="" id="content" name="content" style="margin: 0px; width: 272px; height: 290px;"></textarea>
+                        {% endif %}
+                        <script type="text/javascript">ckeditor = CKEDITOR.replace('content');</script>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">标签</label>
+
+                <!-- Multiple Checkboxes -->
+                <div class="controls">
+                    <!-- Inline Checkboxes -->
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="1">1
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="2">2
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="3">3
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"></label>
+                <!-- Button -->
+                <div class="controls">
+                    <a class="btn btn-success" id="btnSubmit" href="javascript:void(0);">提交</a>
+                    <a class="btn btn-info" id="btnSave">保存</a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
+{% block base_scripts -%}
+    <script>
+//        $(function () {
+//           $('#btnSubmit').on("click", function () {
+//               $.post("/blog-edit", function(res) {
+//                   console.log(res);
+//                   location.href = "/blog/" + res.blog._id;
+//               });
+//           });
+//        });
+
+        $(function () {
+            $('#btnSubmit').click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: '/blog-edit',
+                    data: {
+//                        {% if item %}
+//                            id: {{ item['id'] }},
+//                        {% endif %}
+                        id: $('#id').val(),
+                        title: $('#title').val(),
+//                        content: $('#content').val()
+                        content: ckeditor.getData()
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        alert(res.error);
+                        if (res.success) {
+//                            window.location = "/blog/" + res.blog._id;
+                        }
+                    }
+                });
+            });
+        });
+//        $(function () {
+//        $('#btnSubmit').click(function () {
+//                $.ajax({
+//                    type: 'post',
+//                    url: '/blog-edit',
+//                    data: {
+//                        {% if item %}
+//                            id: {{ item['id'] }},
+//                        {% endif %}
+//                        title: $('#title').val(),
+//                        content: $('#content').val()
+//                    },
+//                    dataType: 'json',
+//                    success: function (res) {
+//                        alert(res.error);
+//                        if (res.success) {
+//                            window.location = "/blog/" + res.blog._id;
+//                        }
+//                    }
+//                });
+//            })
+//        ;
+
+    </script>
+{%- endblock %}
