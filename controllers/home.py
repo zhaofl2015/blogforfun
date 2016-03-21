@@ -71,7 +71,10 @@ def blog_edit():
         _id = request.args.get('id', '')
         if _id:
             blog = Blog.objects.with_id(_id)
-        return render_template('home/blog_edit.html', blog=blog)
+        if blog:
+            return render_template('home/blog_edit2.html', blog=blog, data=json.dumps(blog.as_dict()))
+        else:
+            return render_template('home/blog_edit2.html', blog=None, data=json.dumps({}))
     else:
         _id = request.form.get('id', '').strip()
         if _id:

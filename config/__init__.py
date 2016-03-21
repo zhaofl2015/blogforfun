@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import json
 import os
+import re
+
 import pyaml
 
 __author__ = 'fleago'
@@ -30,7 +34,18 @@ class BlogConfig(object):
     mongodb_host = yaml[stage]['mongo']['host']
 
 
+def _get_path_by_root_path(path_name):
+    return os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), path_name))
+
+
+def _build_ueditor_config():
+    with open(_get_path_by_root_path("static/ueditor/ueditor_config.json")) as f:
+        # 删除 `/**/` 之间的注释
+        temp = json.loads(re.sub(r'/\*(?:[^*]|\*(?!/))*\*/', '', f.read().decode('utf8')))
+    return temp
+
+
 class BlogConst(object):
     """定义常量类"""
 
-    pass
+    UEDITOR_CONIFG = _build_ueditor_config()

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block base_content %}
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/lang/zh-cn/zh-cn.js"></script>
+<style type="text/css">
+        div{
+            width:100%;
+        }
+</style>
+<div class="container">
+    <div id="legend" class="">
+        <legend class="">编辑日志</legend>
+    </div>
+
+    <div class="controls">
+        {% if blog %}
+        <input hidden="hidden" type="text" id="id" value="{{blog.id}}">
+        <input type="text" placeholder="输入标题" id="title" class="input-xlarge" value="{{blog.title}}">
+        {% else %}
+        <input hidden="hidden" type="text" id="id" value="">
+        <input type="text" placeholder="输入标题" id="title" class="input-xlarge">
+        {% endif %}
+
+        <p class="help-block"></p>
+    </div>
+
+    <div>
+        <script id="editor" type="text/plain"></script>
+        <!--<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>-->
+        <div class="control-group">
+            <label class="control-label"></label>
+            <!-- Button -->
+            <div class="controls">
+                <a class="btn btn-success" id="btnSubmit" href="javascript:void(0);">提交</a>
+                <a class="btn btn-info" id="btnSave">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block base_scripts -%}
+<script type="text/javascript">
+//            if(data !== undefined) {
+                var data = {{ data | safe }};
+//            }
+//            var result = {{result|safe}};
+</script>
+    <script>
+        <!--初始化editor-->
+        var ue = UE.getEditor('editor',
+                {
+                    autoHeightEnabled: true,
+                    serverUrl: "/upload"
+//                    serverUrl: "/file/ueditor/upload"
+                }
+        );
+
+        ue.ready(function(){
+            if (data.content !== undefined) {
+                ue.setContent(data.content);
+            }
+        });
+
+        $(function () {
+            $('#btnSubmit').click(function () {
+                var content = UE.getEditor('editor').getContent();
+                $.ajax({
+                    type: 'post',
+                    url: '/blog-edit',
+                    data: {
+                        id: $('#id').val(),
+                        title: $('#title').val(),
+                        content: content
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        alert(res.error);
+                        if (res.success) {
+                            window.location = "/blog/" + res.blog._id;
+                        }
+                    }
+                });
+            });
+            $('#btnSave').click(function () {
+                var content = UE.getEditor('editor').getContent();
+                alert(content);
+                $.ajax({
+                    type: 'post',
+                    url: '/blog-edit',
+                    data: {
+                        id: $('#id').val(),
+                        title: $('#title').val(),
+                        content: content
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        alert(res.error);
+                    }
+                });
+            });
+        });
+
+    </script>
+{%- endblock %}
