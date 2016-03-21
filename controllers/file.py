@@ -29,7 +29,7 @@ def before_request():
 
 def resource_gfs_url(filename):
     """构建访问xx-resource-file的url"""
-    return "%s/file/view/%s" % ('127.0.0.1:5002', unicode(filename))
+    return "http://%s/file/view/%s" % ('127.0.0.1:5002', unicode(filename))
 
 
 @file_op_app.route('/file/upload', methods=['POST'])
@@ -142,11 +142,11 @@ def ueditor_upload():
             f.close()
             result = {
                 "state": "SUCCESS",
-                "url": resource_gfs_url(file_id) + ".jpg",
+                "url": resource_gfs_url(file_id),
                 "title": f.filename,
                 "original": f.filename,
-                "type": "." + f.filename.split('.')[-1],
-                "size": 7819
+                # "type": "." + f.filename.split('.')[-1],
+                # "size": 7819
             }
     # 涂鸦图片上传
     elif action == 'uploadscrawl':
