@@ -21,6 +21,7 @@ app.register_blueprint(file_op_app)
 app.config['SECRET_KEY'] = 'simpleblog'
 
 # login配置
+login_manager.login_view = 'users.login'
 login_manager.init_app(app)
 
 # manager配置

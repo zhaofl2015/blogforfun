@@ -39,12 +39,10 @@
     </div>
 </div>
 {% endblock %}
+
 {% block base_scripts -%}
 <script type="text/javascript">
-//            if(data !== undefined) {
                 var data = {{ data | safe }};
-//            }
-//            var result = {{result|safe}};
 </script>
     <script>
         <!--初始化editor-->
@@ -84,7 +82,6 @@
             });
             $('#btnSave').click(function () {
                 var content = UE.getEditor('editor').getContent();
-                alert(content);
                 $.ajax({
                     type: 'post',
                     url: '/blog-edit',
@@ -96,6 +93,9 @@
                     dataType: 'json',
                     success: function(res) {
                         alert(res.error);
+                        if (res.success) {
+                            window.location = "/blog-edit?id=" + res.blog._id;
+                        }
                     }
                 });
             });

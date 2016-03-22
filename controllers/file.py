@@ -322,8 +322,6 @@ def upload_web():
 
     result = json.dumps(result)
 
-    # print result
-
     if 'callback' in request.args:
         callback = request.args.get('callback')
         if re.match(r'^[\w_]+$', callback):

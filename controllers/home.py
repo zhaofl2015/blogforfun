@@ -20,13 +20,14 @@ home_app = Blueprint('home', __name__)
 
 
 @home_app.before_request
-@login_required
+# @login_required
 def before_request():
     """统一设置本模块权限"""
     pass
 
 
 @home_app.route('/')
+@login_required
 def home():
     return render_template('home/home.html')
 
@@ -61,10 +62,12 @@ def show_blog(id):
     if not blog:
         return jsonify(success=False, error='不存在该日志')
     prev, next = Blog.get_prev_next(unicode(blog.id))
-    return render_template('home/blog_detail.html', blog=blog.as_dict(), prev=prev, next=next)
+    monthes = get_all_month()
+    return render_template('home/blog_detail.html', blog=blog.as_dict(), prev=prev, next=next, monthes=monthes)
 
 
 @home_app.route('/blog-edit', methods=['GET', 'POST'])
+@login_required
 def blog_edit():
     if request.method == 'GET':
         blog = None
@@ -99,6 +102,7 @@ def blog_edit():
 
 
 @home_app.route('/blog-delete', methods=['POST', 'GET'])
+@login_required
 def blog_delete():
     _id = request.form.get('id', '')
     if not _id:

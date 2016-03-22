@@ -17,7 +17,7 @@
                     Admin 编辑于 {{blog.create_time}} - 0 评论 - 0 阅读
                     <div class="more">
                         <a class="button" href="/blog/{{blog._id}}">阅读全文 >></a>
-                        {% if blog['could_delete'] %}
+                        {% if blog['could_delete'] and g.current_user.is_authenticated and g.current_user.could_edit() %}
                         <a class="button" href="/blog-edit?id={{ blog['_id'] }}" style="margin-left:20px;">编辑</a>
                         <!--<a class="button">删除</a>-->
                         {% endif %}
@@ -31,9 +31,11 @@
     </div>
 
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        {% if g.current_user.is_authenticated and g.current_user.could_publish() %}
         <div class="sidebar-module">
             <a href="/blog-edit"><span class="btn btn-info">创建日志</span></a>
         </div>
+        {% endif %}
         <div class="sidebar-module sidebar-module-inset">
             <h4>关于</h4>
 
@@ -51,8 +53,8 @@
             <h4>其他链接</h4>
             <ol class="list-unstyled">
                 <li><a href="#">GitHub</a></li>
-                <li><a href="#">Twitter</a></li>
-                <li><a href="#">Facebook</a></li>
+                <li><a href="#">新浪微博</a></li>
+                <li><a href="#">网易博客</a></li>
             </ol>
         </div>
     </div>

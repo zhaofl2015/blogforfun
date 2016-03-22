@@ -6,8 +6,9 @@
 
     <div class="blog-header">
         <h1 class="blog-title">{{blog.title|safe}}</h1>
+        <input hidden="hidden" type="text" id="id" value="{{blog.id|safe}}">
         {% if blog.description %}
-        <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+        <p class="lead blog-description">{{blog.description}}</p>
         {% endif %}
     </div>
 
@@ -15,21 +16,25 @@
 
         <div class="col-sm-8 blog-main">
 
-            <div class="blog-post">
-                <!--<h2 class="blog-post-title">{{blog.title}}</h2>-->
-                <p class="blog-post-meta">{{blog.create_time|safe}} by <a href="#">{{blog.author|safe}}</a></p>
-                {{blog.content|safe}}
-            </div>
-            <!-- /.blog-post -->
-            <!--<div>操作栏，删除，编辑，阅读，评论等</div>-->
             <div class="">
                 <span class="">阅读({{blog.view_count}})</span>
                 <span class="">|</span>
                 <span class="">评论({{blog.comment_num}})</span>
+                {% if g.current_user.is_authenticated and g.current_user.could_edit() %}
                 <span class="">|</span>
                 <span class=""><a href="/blog-edit?id={{blog._id}}">编辑</a></span>
+                {% endif %}
+                {% if g.current_user.is_authenticated and g.current_user.could_edit() %}
                 <span class="">|</span>
-                <span class=""><a href="/blog-delete?id={{blog._id}}">删除</a></span>
+                <span class=""><a id='btnDelete'>删除</a></span>
+                {% endif %}
+            </div>
+            <!-- /.blog-post -->
+            <!--<div>操作栏，删除，编辑，阅读，评论等</div>-->
+            <div class="blog-post">
+                <!--<h2 class="blog-post-title">{{blog.title}}</h2>-->
+                <p class="blog-post-meta">{{blog.create_time|safe}} by <a href="#">{{blog.author|safe}}</a></p>
+                {{blog.content|safe}}
             </div>
             <nav>
                 <ul class="pager">
@@ -51,34 +56,24 @@
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
             <div class="sidebar-module sidebar-module-inset">
-                <h4>About</h4>
+                <h4>关于</h4>
 
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet
-                    fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                <p>这是自由的国度，你来对地方了</p>
             </div>
             <div class="sidebar-module">
-                <h4>Archives</h4>
+                <h4>归档</h4>
                 <ol class="list-unstyled">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
+                    {% for item in monthes %}
+                    <li><a href="#">{{ item }}</a></li>
+                    {% endfor %}
                 </ol>
             </div>
             <div class="sidebar-module">
-                <h4>Elsewhere</h4>
+                <h4>相关链接</h4>
                 <ol class="list-unstyled">
                     <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">weibo</a></li>
+                    <li><a href="#">netease blog</a></li>
                 </ol>
             </div>
         </div>
@@ -95,3 +90,24 @@
 </footer>
 
 {% endblock %}
+
+{% block base_scripts -%}
+    <script>
+        $(function () {
+            $('#btnDelete').click(function () {
+                $.ajax({
+                    type: 'get',
+                    url: '/blog-delete?id=' + $('#id').val(),
+                    dataType: 'json',
+                    success: function (res) {
+                        alert(res.error);
+                        if (res.success) {
+                            window.location = "/blogs";
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+{%- endblock %}

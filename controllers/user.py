@@ -12,7 +12,7 @@ __author__ = 'fleago'
 users_app = Blueprint('users', __name__)
 
 login_manager = LoginManager()
-login_manager.anonymous_user = BlogUser
+# login_manager.anonymous_user = BlogUser
 
 
 @login_manager.user_loader
@@ -45,9 +45,9 @@ def logout():
     return redirect("/login")
 
 
-@login_manager.unauthorized_handler
-def unauthorized():
-    return redirect("/login")
+# @login_manager.unauthorized_handler
+# def unauthorized():
+#     return redirect("/login")
 
 
 def _could_modify(user):

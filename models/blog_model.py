@@ -63,6 +63,7 @@ class Blog(Document):
     def as_dict(self, with_permisson=True):
         dic = dict(self.to_mongo())
         dic['_id'] = unicode(self.id)
+        dic['id'] = unicode(self.id)
         try:
             dic['author'] = BlogUser.objects.with_id(ObjectId(self.author)).username
         except AttributeError:
@@ -73,7 +74,7 @@ class Blog(Document):
         dic['delete_time'] = format_datetime(self.delete_time)
         dic['last_comment_time'] = format_datetime(self.last_comment_time)
         dic['summary'] = clean_all_html(self.content)[:20]
-        dic['comment_num'] = len(self.comment)
+        dic['comment_num'] = len(self.comment) if self.comment else 0
         if with_permisson:
             dic['could_delete'] = True
             dic['could_edit'] = True

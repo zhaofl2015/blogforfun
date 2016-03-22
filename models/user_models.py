@@ -73,7 +73,7 @@ class BlogUser(Document):
     def could_manage_user(self):
         return self.is_admin
 
-    def could_publish(self):
+    def could_publish(self): # 可以创建日志
         return self.PV_PUBLISH in self.privileges
 
     def could_delete(self):
