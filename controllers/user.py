@@ -45,11 +45,6 @@ def logout():
     return redirect("/login")
 
 
-# @login_manager.unauthorized_handler
-# def unauthorized():
-#     return redirect("/login")
-
-
 def _could_modify(user):
     """判断当前用户是否可以修改user"""
     if not current_user.is_active():
