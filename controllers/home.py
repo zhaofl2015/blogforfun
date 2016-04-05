@@ -50,7 +50,17 @@ def about():
 
 @home_app.route('/blogs')
 def blogs():
-    blogs = [item.as_dict() for item in Blog.objects(delete_time=None)]
+    if current_user.is_authenticated is False:
+        visible = [Blog.VISIBLE_ALL]
+    else:
+        visible = [Blog.VISIBLE_ALL, Blog.VISIBLE_LOGIN, Blog.VISIBLE_OWNER]
+    blogs = list()
+    for item in Blog.objects(delete_time=None, visible__in=visible):
+        if item.visible == Blog.VISIBLE_OWNER and item.author != current_user.id:
+            continue
+        else:
+            blogs.append(item.as_dict())
+    # blogs = [item.as_dict() for item in Blog.objects(delete_time=None)]
     blogs.sort(key=lambda item: item['create_time'], reverse=True)
     monthes = get_all_month()
     return render_template('home/blog.html', blogs=blogs, monthes=monthes)

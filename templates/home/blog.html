@@ -14,7 +14,7 @@
             </div>
             <div class="extra">
                 <div class="alert alert-success">
-                    Admin 编辑于 {{blog.create_time}} - 0 评论 - 0 阅读
+                    {{blog.author}} 编辑于 {{blog.create_time}} - 0 评论 - 0 阅读
                     <div class="more">
                         <a class="button" href="/blog/{{blog._id}}">阅读全文 >></a>
                         {% if blog['could_delete'] and g.current_user.is_authenticated and g.current_user.could_edit() %}

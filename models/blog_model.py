@@ -18,6 +18,16 @@ from . import *
 
 
 class Blog(Document):
+    VISIBLE_ALL = 1
+    VISIBLE_LOGIN = 2
+    VISIBLE_OWNER = 3
+
+    VISIBLE_TYPE = [
+        (VISIBLE_ALL, '所有人可见'),
+        (VISIBLE_LOGIN, '登录可见'),
+        (VISIBLE_OWNER, '作者可见'),
+    ]
+
     title = StringField(required=True)
     comment = ListField(StringField())
     content = StringField(default='')
@@ -30,6 +40,7 @@ class Blog(Document):
     last_view_time = DateTimeField(default=None)
     last_view_ip = StringField(default=None)
     last_view_user = ObjectIdField()
+    visible = IntField(choices=VISIBLE_TYPE, default=VISIBLE_ALL)
 
     meta = {
         'collection' : 'simpleblog',
@@ -78,6 +89,7 @@ class Blog(Document):
         if with_permisson:
             dic['could_delete'] = True
             dic['could_edit'] = True
+        # dic['visible_text'] = self.get_visible_display()
         return dic
 
 

@@ -29,7 +29,8 @@ def before_request():
 
 def resource_gfs_url(filename):
     """构建访问xx-resource-file的url"""
-    return "http://%s/file/view/%s" % ('127.0.0.1:5002', unicode(filename))
+    return "/file/view/%s" % (unicode(filename),)
+    # return "http://%s/file/view/%s" % ('127.0.0.1:5002', unicode(filename))
 
 
 @file_op_app.route('/file/upload', methods=['POST'])
