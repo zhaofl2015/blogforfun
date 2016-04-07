@@ -33,7 +33,7 @@
             <!--<div>操作栏，删除，编辑，阅读，评论等</div>-->
             <div class="blog-post">
                 <!--<h2 class="blog-post-title">{{blog.title}}</h2>-->
-                <p class="blog-post-meta">{{blog.create_time|safe}} by <a href="#">{{blog.author|safe}}</a></p>
+                <p class="blog-post-meta">{{blog.create_time|safe}} by <a href="#">{{blog.author|safe}}</a>&nbsp;&nbsp;<mark>{{blog.visible_text|safe}}</mark></p>
                 {{blog.content|safe}}
             </div>
             <nav>
@@ -83,11 +83,6 @@
     <!-- /.row -->
 
 </div><!-- /.container -->
-
-<footer class="blog-footer">
-    <p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a
-            href="https://twitter.com/mdo">@mdo</a>.</p>
-</footer>
 
 {% endblock %}
 

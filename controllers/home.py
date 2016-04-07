@@ -71,6 +71,10 @@ def show_blog(id):
     blog = Blog.objects.with_id(ObjectId(id))
     if not blog:
         return jsonify(success=False, error='不存在该日志')
+    if (blog.visible in [Blog.VISIBLE_LOGIN, Blog.VISIBLE_OWNER] and current_user.is_authenticated is False) \
+        or (blog.visible == Blog.VISIBLE_OWNER and current_user.id != blog.author):
+        return abort(403)
+
     prev, next = Blog.get_prev_next(unicode(blog.id))
     monthes = get_all_month()
     return render_template('home/blog_detail.html', blog=blog.as_dict(), prev=prev, next=next, monthes=monthes)
@@ -96,10 +100,11 @@ def blog_edit():
             blog = Blog()
         title = request.form.get('title', '').strip()
         content = request.form.get('content', '').strip()
-        # print title, content
+        visible = request.form.get('visible', 1, int)
         blog.title = title
         blog.content = content
         blog.author = current_user.id
+        blog.visible = visible
         if _id:
             blog.update_time = now_lambda()
         else:

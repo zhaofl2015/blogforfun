@@ -23,10 +23,12 @@ class Blog(Document):
     VISIBLE_OWNER = 3
 
     VISIBLE_TYPE = [
-        (VISIBLE_ALL, '所有人可见'),
-        (VISIBLE_LOGIN, '登录可见'),
-        (VISIBLE_OWNER, '作者可见'),
+        (VISIBLE_ALL, u'所有人可见'),
+        (VISIBLE_LOGIN, u'登录可见'),
+        (VISIBLE_OWNER, u'作者可见'),
     ]
+
+    VISIBLE_TYPE_DICT = dict(VISIBLE_TYPE)
 
     title = StringField(required=True)
     comment = ListField(StringField())
@@ -89,7 +91,7 @@ class Blog(Document):
         if with_permisson:
             dic['could_delete'] = True
             dic['could_edit'] = True
-        # dic['visible_text'] = self.get_visible_display()
+        dic['visible_text'] = self.VISIBLE_TYPE_DICT.get(self.visible, '')
         return dic
 
 

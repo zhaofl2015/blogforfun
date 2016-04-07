@@ -16,10 +16,10 @@
     <div class="controls">
         {% if blog %}
         <input hidden="hidden" type="text" id="id" value="{{blog.id}}">
-        <input type="text" placeholder="输入标题" id="title" class="input-xlarge" value="{{blog.title}}">
+        <input type="text" placeholder="输入标题" id="title" class="form-control" value="{{blog.title}}">
         {% else %}
         <input hidden="hidden" type="text" id="id" value="">
-        <input type="text" placeholder="输入标题" id="title" class="input-xlarge">
+        <input type="text" placeholder="输入标题" id="title" class="form-control">
         {% endif %}
 
         <p class="help-block"></p>
@@ -30,6 +30,19 @@
         <!--<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>-->
         <div class="control-group">
             <label class="control-label"></label>
+            <br/>
+            <br/>
+            <label class="radio-inline">
+                <input type="radio" name="visible" id="visible1" value="1"> 所有人可见
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="visible" id="visible2" value="2"> 登录可见
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="visible" id="visible3" value="3"> 仅自己可见
+            </label>
+            <br/>
+            <br/>
             <!-- Button -->
             <div class="controls">
                 <a class="btn btn-success" id="btnSubmit" href="javascript:void(0);">提交</a>
@@ -57,6 +70,8 @@
         ue.ready(function(){
             if (data.content !== undefined) {
                 ue.setContent(data.content);
+                checked_value = data.visible.toString();
+                $("input[name='visible'][value="+checked_value+"]").attr("checked", true);
             }
         });
 
@@ -69,6 +84,7 @@
                     data: {
                         id: $('#id').val(),
                         title: $('#title').val(),
+                        visible: $("input[name='visible']:checked").val(),
                         content: content
                     },
                     dataType: 'json',
@@ -88,6 +104,7 @@
                     data: {
                         id: $('#id').val(),
                         title: $('#title').val(),
+                        visible: $("input[name='visible']:checked").val(),
                         content: content
                     },
                     dataType: 'json',
