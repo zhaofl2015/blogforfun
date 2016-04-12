@@ -12,6 +12,8 @@
 @time: 2015/10/25 21:35
 """
 from bson import ObjectId
+# from flask.ext.login import current_user
+
 from models.user_models import BlogUser
 from utils.common_utils import now_lambda, format_datetime, clean_all_html
 from . import *
@@ -43,22 +45,34 @@ class Blog(Document):
     last_view_ip = StringField(default=None)
     last_view_user = ObjectIdField()
     visible = IntField(choices=VISIBLE_TYPE, default=VISIBLE_ALL)
+    tags = ListField(StringField(required=True), default=[])
 
     meta = {
-        'collection' : 'simpleblog',
-        'db_alias' : BlogConfig.mongodb_blog_alias,
-        'strict' : False
+        'collection': 'simpleblog',
+        'db_alias': BlogConfig.mongodb_blog_alias,
+        'strict': False
     }
 
     @classmethod
-    def get_prev_next(cls, blog_id):
-        '''
+    def get_prev_next(cls, blog_id, current_user):
+        """
         获得前一篇文章的id，根据时间倒叙排序
+        blog_id
         :return:
-        '''
+        """
         id_list = []
-        for item in cls.objects(delete_time=None).order_by("create_time").only('id').all():
-            id_list.append(unicode(item.id))
+
+        for item in cls.objects(delete_time=None, visible=cls.VISIBLE_ALL).only('id', 'create_time').all():
+            id_list.append((unicode(item.id), format_datetime(item.create_time)))
+        if current_user.is_authenticated:
+            for item in cls.objects(Q(delete_time=None) & (Q(visible=cls.VISIBLE_LOGIN) | (Q(visible=cls.VISIBLE_OWNER) & Q(author=current_user.id)))).only('id', 'create_time').all():
+                id_list.append((unicode(item.id), format_datetime(item.create_time)))
+
+        id_list.sort(key=lambda x: x[1])
+        id_list = map(lambda x: x[0], id_list)
+
+        # for item in cls.objects(delete_time=None).order_by("create_time").only('id').all():
+        #     id_list.append(unicode(item.id))
         # print id_list
         try:
             ind = id_list.index(blog_id)

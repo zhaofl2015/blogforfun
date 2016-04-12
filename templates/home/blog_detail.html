@@ -22,11 +22,11 @@
                 <span class="">评论({{blog.comment_num}})</span>
                 {% if g.current_user.is_authenticated and g.current_user.could_edit() %}
                 <span class="">|</span>
-                <span class=""><a href="/blog-edit?id={{blog._id}}">编辑</a></span>
+                <span class=""><a href="/blog-edit?id={{blog._id}}" title="编辑"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></span>
                 {% endif %}
                 {% if g.current_user.is_authenticated and g.current_user.could_edit() %}
                 <span class="">|</span>
-                <span class=""><a id='btnDelete'>删除</a></span>
+                <span class=""><a id='btnDelete' title="删除"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></span>
                 {% endif %}
             </div>
             <!-- /.blog-post -->
@@ -34,17 +34,25 @@
             <div class="blog-post">
                 <!--<h2 class="blog-post-title">{{blog.title}}</h2>-->
                 <p class="blog-post-meta">{{blog.create_time|safe}} by <a href="#">{{blog.author|safe}}</a>&nbsp;&nbsp;<mark>{{blog.visible_text|safe}}</mark></p>
-                {{blog.content|safe}}
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                {% for tag in blog.tags %}
+                <span class="label label-info">{{tag}}</span>
+                {% endfor %}
+                <br/>
+                <br/>
+                <div class="well">
+                    {{blog.content|safe}}
+                </div>
             </div>
             <nav>
                 <ul class="pager">
                     {% if prev %}
-                    <li><a href="/blog/{{prev}}">Previous</a></li>
+                    <li><a href="/blog/{{prev}}" title="上一篇"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a></li>
                     {% else %}
                     <li>已经是第一篇了</li>
                     {% endif %}
                     {% if next %}
-                    <li><a href="/blog/{{next}}">Next</a></li>
+                    <li><a href="/blog/{{next}}" title="下一篇"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a></li>
                     {% else %}
                     <li>已经是最后一篇了</li>
                     {% endif %}
@@ -90,17 +98,23 @@
     <script>
         $(function () {
             $('#btnDelete').click(function () {
-                $.ajax({
-                    type: 'get',
-                    url: '/blog-delete?id=' + $('#id').val(),
-                    dataType: 'json',
-                    success: function (res) {
-                        alert(res.error);
-                        if (res.success) {
-                            window.location = "/blogs";
+                if(window.confirm('确认删除吗？')){
+                    alert('你点击了确认键');
+                    $.ajax({
+                        type: 'get',
+                        url: '/blog-delete?id=' + $('#id').val(),
+                        dataType: 'json',
+                        success: function (res) {
+                            alert(res.error);
+                            if (res.success) {
+                                window.location = "/blogs";
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    alert('你点击了取消键');
+                }
             });
         });
 

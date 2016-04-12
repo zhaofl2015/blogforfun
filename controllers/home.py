@@ -75,7 +75,7 @@ def show_blog(id):
         or (blog.visible == Blog.VISIBLE_OWNER and current_user.id != blog.author):
         return abort(403)
 
-    prev, next = Blog.get_prev_next(unicode(blog.id))
+    prev, next = Blog.get_prev_next(unicode(blog.id), current_user)
     monthes = get_all_month()
     return render_template('home/blog_detail.html', blog=blog.as_dict(), prev=prev, next=next, monthes=monthes)
 
@@ -101,10 +101,12 @@ def blog_edit():
         title = request.form.get('title', '').strip()
         content = request.form.get('content', '').strip()
         visible = request.form.get('visible', 1, int)
+        tags = request.form.getlist('tags[]')
         blog.title = title
         blog.content = content
         blog.author = current_user.id
         blog.visible = visible
+        blog.tags = tags
         if _id:
             blog.update_time = now_lambda()
         else:

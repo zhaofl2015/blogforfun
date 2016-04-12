@@ -3,11 +3,14 @@
 <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="../../static/ueditor/lang/zh-cn/zh-cn.js"></script>
-<style type="text/css">
-        div{
-            width:100%;
-        }
-</style>
+
+<!--<link rel="stylesheet" href="../../static/3rd/selectize/css/normalize.css">-->
+<!--<link rel="stylesheet" href="css/stylesheet.css">-->
+<link rel="stylesheet" href="../../static/3rd/selectize/css/selectize.legacy.css">
+<script src="../../static/3rd/jquery/jquery.js"></script>
+<script src="../../static/3rd/selectize/js/selectize.js"></script>
+<!--<script src="../../static/3rd/selectize/js/index.js"></script>-->
+
 <div class="container">
     <div id="legend" class="">
         <legend class="">编辑日志</legend>
@@ -28,6 +31,55 @@
     <div>
         <script id="editor" type="text/plain"></script>
         <!--<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>-->
+
+        <br/>
+        <br/>
+
+
+        <link rel="stylesheet" href="../../static/3rd/selectize/css/normalize.css">
+		<link rel="stylesheet" href="../../static/3rd/selectize/css/stylesheet.css">
+        <div id="wrapper">
+            <div class="control-group">
+                <label for="select-tags">标签:</label>
+                <select id="select-tags" multiple name="tags[]" class="demo-default" style="width:50%">
+                    <option value="">选择或新建标签...</option>
+                    {% for tag in blog.tags %}
+                        <option value={{tag}} selected>{{tag}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <script>
+
+            var $select = $('#select-tags').selectize({
+                create          : true,
+                options: [
+						{id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
+						{id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
+						{id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
+					],
+            });
+            </script>
+		</div>
+
+        <!--<select id="select" multiple name="tags[]" class="demo-default" style="width:100%">-->
+            <!--<option value=''>choose one</option>-->
+            <!--<option value='abc'>abc</option>-->
+            <!--<option value='cdc'>cdc</option>-->
+            <!--<option value='eec'>eec</option>-->
+        <!--</select>-->
+        <!--&lt;!&ndash;<script type="text/javascript" src="selectize.js"></script>&ndash;&gt;-->
+        <!--<link rel="stylesheet" type="text/css" href="../../static/3rd/selectize/css/selectize.default.css"/>-->
+        <!--<script>-->
+<!--//            $(function () {-->
+<!--//                $('#select').selectize({-->
+<!--//                    create: true-->
+<!--//                });-->
+<!--//            });-->
+            <!--var $select = $('#select').selectize({-->
+                <!--create          : true,-->
+            <!--});-->
+        <!--</script>-->
+
         <div class="control-group">
             <label class="control-label"></label>
             <br/>
@@ -55,68 +107,72 @@
 
 {% block base_scripts -%}
 <script type="text/javascript">
-                var data = {{ data | safe }};
+    var data = {{ data | safe }};
 </script>
-    <script>
-        <!--初始化editor-->
-        var ue = UE.getEditor('editor',
-                {
-                    autoHeightEnabled: true,
+
+<script>
+    <!--初始化editor-->
+    var ue = UE.getEditor('editor',
+            {
+                autoHeightEnabled: true,
 //                    serverUrl: "/upload"
-                    serverUrl: "/file/ueditor/upload"
-                }
-        );
-
-        ue.ready(function(){
-            if (data.content !== undefined) {
-                ue.setContent(data.content);
-                checked_value = data.visible.toString();
-                $("input[name='visible'][value="+checked_value+"]").attr("checked", true);
+                serverUrl: "/file/ueditor/upload"
             }
-        });
+    );
 
-        $(function () {
-            $('#btnSubmit').click(function () {
-                var content = UE.getEditor('editor').getContent();
-                $.ajax({
-                    type: 'post',
-                    url: '/blog-edit',
-                    data: {
-                        id: $('#id').val(),
-                        title: $('#title').val(),
-                        visible: $("input[name='visible']:checked").val(),
-                        content: content
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        alert(res.error);
-                        if (res.success) {
-                            window.location = "/blog/" + res.blog._id;
-                        }
+    ue.ready(function(){
+        if (data.content !== undefined) {
+            ue.setContent(data.content);
+            checked_value = data.visible.toString();
+            $("input[name='visible'][value="+checked_value+"]").attr("checked", true);
+        }
+    });
+
+    $(function () {
+        $('#btnSubmit').click(function () {
+            var content = UE.getEditor('editor').getContent();
+//            alert($('#select-tags').val());
+            $.ajax({
+                type: 'post',
+                url: '/blog-edit',
+                data: {
+                    id: $('#id').val(),
+                    title: $('#title').val(),
+                    visible: $("input[name='visible']:checked").val(),
+                    tags: $('#select-tags').val(),
+                    content: content
+                },
+                dataType: 'json',
+                success: function (res) {
+                    alert(res.error);
+                    if (res.success) {
+                        window.location = "/blog/" + res.blog._id;
                     }
-                });
-            });
-            $('#btnSave').click(function () {
-                var content = UE.getEditor('editor').getContent();
-                $.ajax({
-                    type: 'post',
-                    url: '/blog-edit',
-                    data: {
-                        id: $('#id').val(),
-                        title: $('#title').val(),
-                        visible: $("input[name='visible']:checked").val(),
-                        content: content
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-                        alert(res.error);
-                        if (res.success) {
-                            window.location = "/blog-edit?id=" + res.blog._id;
-                        }
-                    }
-                });
+                }
             });
         });
+        $('#btnSave').click(function () {
+            var content = UE.getEditor('editor').getContent();
+            $.ajax({
+                type: 'post',
+                url: '/blog-edit',
+                data: {
+                    id: $('#id').val(),
+                    title: $('#title').val(),
+                    visible: $("input[name='visible']:checked").val(),
+                    tags: $('#select-tags').val(),
+                    content: content
+                },
+                dataType: 'json',
+                success: function(res) {
+                    alert(res.error);
+                    if (res.success) {
+                        window.location = "/blog-edit?id=" + res.blog._id;
+                    }
+                }
+            });
+        });
+    });
 
-    </script>
+</script>
 {%- endblock %}
