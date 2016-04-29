@@ -54,6 +54,25 @@ class Blog(Document):
     }
 
     @classmethod
+    def get_blogs_could_view(cls, current_user):
+        """
+        获得一个用户可以查看的blog信息列表
+        :param current_user:
+        :param count:
+        :return:
+        """
+        res_list = list()
+        for item in cls.objects(delete_time=None, visible=cls.VISIBLE_ALL).limit(count):
+            res_list.append(item)
+        if current_user.is_authenticated:
+            for item in cls.objects(Q(delete_time=None) & (Q(visible=cls.VISIBLE_LOGIN)
+                                                               | (Q(visible=cls.VISIBLE_OWNER) &
+                                                                      Q(author=current_user.id))))\
+                    .only('id', 'create_time').all():
+                res_list.append(item)
+        return res_list
+
+    @classmethod
     def get_prev_next(cls, blog_id, current_user):
         """
         获得前一篇文章的id，根据时间倒叙排序
@@ -65,15 +84,15 @@ class Blog(Document):
         for item in cls.objects(delete_time=None, visible=cls.VISIBLE_ALL).only('id', 'create_time').all():
             id_list.append((unicode(item.id), format_datetime(item.create_time)))
         if current_user.is_authenticated:
-            for item in cls.objects(Q(delete_time=None) & (Q(visible=cls.VISIBLE_LOGIN) | (Q(visible=cls.VISIBLE_OWNER) & Q(author=current_user.id)))).only('id', 'create_time').all():
+            for item in cls.objects(Q(delete_time=None) & (Q(visible=cls.VISIBLE_LOGIN)
+                                                               | (Q(visible=cls.VISIBLE_OWNER) &
+                                                                      Q(author=current_user.id))))\
+                    .only('id', 'create_time').all():
                 id_list.append((unicode(item.id), format_datetime(item.create_time)))
 
         id_list.sort(key=lambda x: x[1])
         id_list = map(lambda x: x[0], id_list)
 
-        # for item in cls.objects(delete_time=None).order_by("create_time").only('id').all():
-        #     id_list.append(unicode(item.id))
-        # print id_list
         try:
             ind = id_list.index(blog_id)
         except ValueError:
@@ -108,6 +127,32 @@ class Blog(Document):
         dic['visible_text'] = self.VISIBLE_TYPE_DICT.get(self.visible, '')
         return dic
 
+
+class BlogTag(Document):
+    """
+        存储blog的tag
+    """
+    name = StringField(required=True)
+    count = IntField(required=True, default=0)
+    last_use_time = DateTimeField(required=True)
+    create_time = DateTimeField(default=now_lambda())
+    update_time = DateTimeField(default=None)
+    delete_time = DateTimeField(default=None)
+
+    meta = {
+        'collection': 'blogtag',
+        'db_alias': BlogConfig.mongodb_blog_alias,
+        'strict': False
+    }
+
+    def as_dict(self):
+        dic = dict(self.to_mongo())
+        dic['id'] = unicode(self.id)
+        dic['last_use_time'] = format_datetime(self.last_use_time)
+        dic['create_time'] = format_datetime(self.create_time)
+        dic['update_time'] = format_datetime(self.update_time)
+        dic['delete_time'] = format_datetime(self.delete_time)
+        return dic
 
 if __name__ == '__main__':
     pass

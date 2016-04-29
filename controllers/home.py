@@ -13,7 +13,7 @@
 """
 
 from . import *  # 从__init__中导入所有的文件
-from models.blog_model import Blog
+from models.blog_model import Blog, BlogTag
 from utils.common_utils import now_lambda, format_datetime
 
 home_app = Blueprint('home', __name__)
@@ -84,14 +84,22 @@ def show_blog(id):
 @login_required
 def blog_edit():
     if request.method == 'GET':
+        tags = get_tags()
+        tags = map(lambda x: x['name'], tags)
         blog = None
         _id = request.args.get('id', '')
         if _id:
             blog = Blog.objects.with_id(_id)
+            for tag in blog.tags:
+                if tag in tags:
+                    tags.remove(tag)
+        tag_list = tags
+        tags = json.dumps(tags)
         if blog:
-            return render_template('home/blog_edit2.html', blog=blog, data=json.dumps(blog.as_dict()))
+            return render_template('home/blog_edit2.html', blog=blog, data=json.dumps(blog.as_dict()), tags=tags,
+                                   tag_list=tag_list)
         else:
-            return render_template('home/blog_edit2.html', blog=None, data=json.dumps({}))
+            return render_template('home/blog_edit2.html', blog=None, data=json.dumps({}), tags=tags, tag_list=tag_list)
     else:
         _id = request.form.get('id', '').strip()
         if _id:
@@ -115,6 +123,18 @@ def blog_edit():
            blog.save()
         except ValidationError, e:
             return jsonify(success=False, error='save failed %s' % e)
+
+        # 保存tag
+        for tag in tags:
+            blog_tag = BlogTag.objects(name=tag).first()
+            if not blog_tag:
+                blog_tag = BlogTag(name=tag, count=1, last_use_time=now_lambda(), create_time=now_lambda())
+                blog_tag.save()
+            else:
+                blog_tag.update_time = now_lambda()
+                blog_tag.last_use_time = now_lambda()
+                blog_tag.count += 1
+                blog_tag.save()
         return jsonify(success=True, error='提交成功', blog=blog.reload().as_dict())
 
 
@@ -146,3 +166,11 @@ def get_all_month():
     for item in Blog.objects(delete_time=None):
         res_list.add(format_datetime(item.create_time, '%Y-%m'))
     return list(res_list)
+
+
+def get_tags():
+    res_list = list()
+    for item in BlogTag.objects(delete_time=None).order_by('-count'):
+        res_list.append(item.as_dict())
+    return res_list
+    # return jsonify()

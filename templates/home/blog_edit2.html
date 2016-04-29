@@ -46,6 +46,9 @@
                     {% for tag in blog.tags %}
                         <option value={{tag}} selected>{{tag}}</option>
                     {% endfor %}
+                    {% for tag in tag_list %}
+                        <option value={{tag}}>{{tag}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <script>
@@ -60,25 +63,6 @@
             });
             </script>
 		</div>
-
-        <!--<select id="select" multiple name="tags[]" class="demo-default" style="width:100%">-->
-            <!--<option value=''>choose one</option>-->
-            <!--<option value='abc'>abc</option>-->
-            <!--<option value='cdc'>cdc</option>-->
-            <!--<option value='eec'>eec</option>-->
-        <!--</select>-->
-        <!--&lt;!&ndash;<script type="text/javascript" src="selectize.js"></script>&ndash;&gt;-->
-        <!--<link rel="stylesheet" type="text/css" href="../../static/3rd/selectize/css/selectize.default.css"/>-->
-        <!--<script>-->
-<!--//            $(function () {-->
-<!--//                $('#select').selectize({-->
-<!--//                    create: true-->
-<!--//                });-->
-<!--//            });-->
-            <!--var $select = $('#select').selectize({-->
-                <!--create          : true,-->
-            <!--});-->
-        <!--</script>-->
 
         <div class="control-group">
             <label class="control-label"></label>
@@ -108,6 +92,7 @@
 {% block base_scripts -%}
 <script type="text/javascript">
     var data = {{ data | safe }};
+    var tags = {{ tags | safe }};
 </script>
 
 <script>
@@ -144,7 +129,7 @@
                 },
                 dataType: 'json',
                 success: function (res) {
-                    alert(res.error);
+//                    alert(res.error);
                     if (res.success) {
                         window.location = "/blog/" + res.blog._id;
                     }
