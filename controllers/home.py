@@ -174,3 +174,14 @@ def get_tags():
         res_list.append(item.as_dict())
     return res_list
     # return jsonify()
+
+
+@home_app.context_processor
+def go_for_play():
+    return dict(gogogo='1+2=3? You got it! in home app')
+
+@home_app.context_processor
+def go_for_var():
+    def say_hello(username='Nobody'):
+        return 'hello %s' % username
+    return dict(say_hello=say_hello)

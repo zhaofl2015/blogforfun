@@ -35,6 +35,16 @@ def get_path_by_root_path(path_name):
 
 
 def clean_all_html(content):
+    """清除所有的html标签"""
     dr = re.compile(r'<[^>]+>', re.S)
     dd = dr.sub('', content)
     return dd
+
+
+def keep_only_words(content):
+    """清除html标签，且清除所有的转义符"""
+    content = clean_all_html(content)
+    content = content.replace('&nbsp;', ' ')
+    content = content.replace('&quot;', '\"')
+    content = content.replace('&#39;', '\'')
+    return content

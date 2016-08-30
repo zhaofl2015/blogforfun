@@ -33,6 +33,11 @@ if config.BlogConfig.stage == 'production':
 else:
     app.debug = True
 
+def go_for_fun():
+    return '1+2=3? You got it!'
+
+app.jinja_env.globals.update(go_for_fun=go_for_fun)
+
 @app.before_request
 def before_request():
     g.current_user = current_user

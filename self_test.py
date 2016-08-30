@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import os
+
+import pyaml
+import pymongo
+from pymongo import MongoClient
+
 from models.blog_model import Blog
 from models.user_models import BlogUser
-from utils.common_utils import now_lambda
+from utils.common_utils import now_lambda, clean_all_html, keep_only_words
 from mongoengine import *
 
 __author__ = 'fleago'
@@ -57,6 +64,43 @@ def test_list():
 def test_prev_next():
     print Blog.get_prev_next('56c462de59acd1470c262e04')
 
+
+def test_update_return():
+    root = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(root, 'config', 'database.yaml')
+    yaml = pyaml.yaml.safe_load(open(config_path))
+    config = yaml[yaml['stage']]
+    client = MongoClient(config['mongo']['host'])
+    test = client['simpleblog']['test']
+    ret = test.update({'x': 'z'}, {'$set': {'x': '1'}})
+    print ret
+    try:
+        ret = test.find({'x': 2}).next()
+        print ret
+    except StopIteration:
+        print 'no info'
+    a = test.find_one({'x': '1'}, sort=[('x', pymongo.ASCENDING)])
+    print a
+
+
+def test_chrome():
+    from selenium import webdriver
+
+    browser = webdriver.Chrome('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')
+    browser.get('http://www.baidu.com/')
+
+
+def put_info_into_es():
+    root = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(root, 'config', 'database.yaml')
+    yaml = pyaml.yaml.safe_load(open(config_path))
+    config = yaml[yaml['stage']]
+    client = MongoClient(config['mongo']['host'])
+    blogtb = client['simpleblog']['simpleblog']
+    for blog in blogtb.find():
+        print blog['title'], keep_only_words(blog['content'])
+
+
 if __name__ == '__main__':
-    test_prev_next()
+    put_info_into_es()
     pass

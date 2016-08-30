@@ -119,7 +119,7 @@ class Blog(Document):
         dic['update_time'] = format_datetime(self.update_time)
         dic['delete_time'] = format_datetime(self.delete_time)
         dic['last_comment_time'] = format_datetime(self.last_comment_time)
-        dic['summary'] = clean_all_html(self.content)[:20]
+        dic['summary'] = clean_all_html(self.content)[:20].lstrip('&nbsp;')
         dic['comment_num'] = len(self.comment) if self.comment else 0
         if with_permisson:
             dic['could_delete'] = True

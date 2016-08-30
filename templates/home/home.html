@@ -1,57 +1,37 @@
 {% extends 'base.html' %}
 {% block base_styles %}
     <link type="text/css" rel="stylesheet" href="/static/css/common.css" />
+    <!-- Start WOWSlider.com HEAD section -->
+    <link rel="stylesheet" type="text/css" href="/static/3rd/wowslider/engine1/style.css"/>
+    <script type="text/javascript" src="/static/3rd/wowslider/engine1/jquery.js"></script>
+    <!-- End WOWSlider.com HEAD section -->
 {% endblock %}
 {% block base_content -%}
     <div class="container-fluid">
-        <table class="table table-bordered table-striped table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th>表头一</th>
-                    <th>表头二</th>
-                    <th>表头三</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>内容1</td>
-                <td>内容2</td>
-                <td>内容3</td>
-                <td>
-                    <a class="btn btn-success" href="">进入</a>
-                </td>
-            </tr>
-            <tr>
-                <td>内容四</td>
-                <td>内容五</td>
-                <td>内容六</td>
-                <td>
-                    <a class="btn btn-info" href="">进入</a>
-                </td>
-            </tr>
-            <tr>
-                <td>内容7</td>
-                <td>内容8</td>
-                <td>内容9</td>
-                <td>
-                    <a class="btn btn-primary" href="">进入</a>
-                </td>
-            </tr>
-
-                <tr>
-                    <td>内容11</td>
-                    <td>内容12</td>
-                    <td>内容13</td>
-                    <td>
-                        <a class="btn btn-primary" href="">进入</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div style='margin:0px auto;max-height: 200px;max-width: 200px'>
-            <img data-src="holder.js/200x200"  class="img-thumbnail" alt="200x200" src="/static/img/6.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+        <!-- Start WOWSlider.com BODY section -->
+        <div id="wowslider-container1">
+        <div class="ws_images"><ul>
+                <li><img src="/static/3rd/wowslider/data1/images/139150309101f2.jpg" alt="" title="" id="wows1_0"/></li>
+                <li><a href="http://wowslider.net"><img src="/static/3rd/wowslider/data1/images/139150309101f7.jpg" alt="jquery carousel" title="" id="wows1_1"/></a></li>
+                <li><img src="/static/3rd/wowslider/data1/images/12359647_224250202132_2.jpg" alt="" title="" id="wows1_2"/></li>
+            </ul></div>
+            <div class="ws_bullets"><div>
+                <a href="#" title=""><span><img src="/static/3rd/wowslider/data1/tooltips/139150309101f2.jpg" alt=""/>1</span></a>
+                <a href="#" title=""><span><img src="/static/3rd/wowslider/data1/tooltips/139150309101f7.jpg" alt=""/>2</span></a>
+                <a href="#" title=""><span><img src="/static/3rd/wowslider/data1/tooltips/12359647_224250202132_2.jpg" alt=""/>3</span></a>
+            </div></div><div class="ws_script" style="position:absolute;left:-99%"><a href="http://wowslider.com/vi">cssslider</a> by WOWSlider.com v8.7</div>
+        <div class="ws_shadow"></div>
         </div>
+        <script type="text/javascript" src="/static/3rd/wowslider/engine1/wowslider.js"></script>
+        <script type="text/javascript" src="/static/3rd/wowslider/engine1/script.js"></script>
+        <!-- End WOWSlider.com BODY section -->
+
+
+        <!--<div style='margin:0px auto;max-height: 200px;max-width: 200px'>-->
+            <!--<img data-src="holder.js/200x200"  class="img-thumbnail" alt="200x200" src="/static/img/6.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">-->
+        <!--</div>-->
+        <!---->
+
         <div id="carousel-example-generic" style='margin:0px auto;max-height:220px;max-width:501px'class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
