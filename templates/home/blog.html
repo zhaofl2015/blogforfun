@@ -4,7 +4,6 @@
 <div class="container">
     <div class="col-sm-8">
         {% for blog in blogs %}
-
         <article>
             <div class="heading"><h2 class="title" style="text-transform:none;"><a href="/blog/{{blog._id}}">{{
                 blog.title |safe }}</a></h2></div>
@@ -26,14 +25,22 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="clear"></div>
             </div>
         </article>
         {% endfor %}
+        <ul class="pagination" id="pagination1"></ul>
     </div>
 
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <div class="input-group">
+            <input type="text" id='search_word' class="form-control" placeholder="搜你想要的">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" id='btnSearch' type="button"><span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+        </div>
+        <br/>
         {% if g.current_user.is_authenticated and g.current_user.could_publish() %}
         <div class="sidebar-module">
             <a href="/blog-edit"><span class="btn btn-info">创建日志</span></a>
@@ -66,6 +73,7 @@
 {% endblock %}
 
 {% block base_scripts -%}
+<script type="text/javascript" src="/static/pagination/jqPaginator.js"></script>
 <script>
     $(function () {
         $('.delete').click(function () {
@@ -80,6 +88,39 @@
                     }
                 }, 'json');
             }
+        });
+    });
+
+    var total = {{total | safe}};
+    var page = {{page | safe}};
+    var per_page = {{per_page | safe}};
+
+    $.jqPaginator('#pagination1', {
+        totalCounts: total,
+        pageSize: per_page,
+        visiblePages: Math.min(total, 10),
+        currentPage: page,
+        onPageChange: function (num, type) {
+            if(type == 'change')
+                window.location.href= '/blogs?page=' + num.toString();
+        }
+    });
+
+    $(function () {
+        $('#btnSearch').click(function () {
+            var keyword = $('#search_word').val();
+            $.ajax({
+                type: 'post',
+                url: '/search-blog',
+                data: {
+                    keyword: keyword,
+                },
+                dataType: 'html',
+                success: function (res) {
+//                    alert(res.error);
+                    $('html').html(res);
+                }
+            });
         });
     });
 </script>

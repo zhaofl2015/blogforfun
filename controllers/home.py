@@ -11,7 +11,7 @@
 @file: home.py
 @time: 2015/10/22 23:17
 """
-
+from utils.es_utils import es_query, es_extract_info, es_extract_id
 from . import *  # 从__init__中导入所有的文件
 from models.blog_model import Blog, BlogTag
 from utils.common_utils import now_lambda, format_datetime
@@ -48,22 +48,67 @@ def about():
     return 'you are such a handsome guy' + current_user.username
 
 
-@home_app.route('/blogs')
+@home_app.route('/blogs', methods=['GET'])
 def blogs():
-    if current_user.is_authenticated is False:
-        visible = [Blog.VISIBLE_ALL]
-    else:
-        visible = [Blog.VISIBLE_ALL, Blog.VISIBLE_LOGIN, Blog.VISIBLE_OWNER]
-    blogs = list()
-    for item in Blog.objects(delete_time=None, visible__in=visible):
-        if item.visible == Blog.VISIBLE_OWNER and item.author != current_user.id:
-            continue
+    if request.method == 'GET':
+        page = request.args.get('page', 1, int)
+        per_page = 10
+        if current_user.is_authenticated is False:
+            visible = [Blog.VISIBLE_ALL]
         else:
-            blogs.append(item.as_dict())
-    # blogs = [item.as_dict() for item in Blog.objects(delete_time=None)]
-    blogs.sort(key=lambda item: item['create_time'], reverse=True)
+            visible = [Blog.VISIBLE_ALL, Blog.VISIBLE_LOGIN, Blog.VISIBLE_OWNER]
+        blogs = list()
+        for item in Blog.objects(delete_time=None, visible__in=visible):
+            if item.visible == Blog.VISIBLE_OWNER and item.author != current_user.id:
+                continue
+            else:
+                blogs.append(item.as_dict())
+        # blogs = [item.as_dict() for item in Blog.objects(delete_time=None)]
+        blogs.sort(key=lambda item: item['create_time'], reverse=True)
+        total = len(blogs)
+        blogs = blogs[per_page * (page - 1): per_page * page]
+    else:
+        pass
+
     monthes = get_all_month()
-    return render_template('home/blog.html', blogs=blogs, monthes=monthes)
+
+    return render_template('home/blog.html', blogs=blogs, monthes=monthes, total=total, per_page=per_page, page=page)
+
+
+@home_app.route('/search-blog', methods=['POST'])
+def search_blog():
+    """根据传入的信息，进行搜搜"""
+    keyword = request.form.get('keyword', '').strip()
+    if not keyword:
+        return jsonify(success=False, error='请输入关键字')
+
+    res_ids = list()
+    ret_title = es_query(title=keyword)
+    timed_out, took, total, id_list = es_extract_id(ret_title)
+    res_ids.extend(id_list)
+
+    ret_content = es_query(content=keyword)
+    timed_out, took, total, id_list = es_extract_id(ret_content)
+    res_ids.extend(id_list)
+
+    res_ids = list(set(res_ids))
+
+    blogs = list()
+
+    for _id in res_ids:
+        blog = Blog.objects.with_id(ObjectId(_id))
+        if blog:
+            blogs.append(blog.as_dict())
+
+    total = len(blogs)
+    page = request.form.get('page', 1, int)
+    per_page = 10
+
+    monthes = get_all_month()
+
+    blogs = blogs[per_page * (page - 1): per_page * page]
+
+    return render_template('home/blog.html', blogs=blogs, monthes=monthes, total=total, per_page=per_page, page=page)
 
 
 @home_app.route('/blog/<string:id>', methods=['GET'])
@@ -119,6 +164,7 @@ def blog_edit():
             blog.update_time = now_lambda()
         else:
             blog.create_time = now_lambda()
+            blog.update_time = blog.create_time
         try:
            blog.save()
         except ValidationError, e:
@@ -165,7 +211,9 @@ def get_all_month():
     res_list = set()
     for item in Blog.objects(delete_time=None):
         res_list.add(format_datetime(item.create_time, '%Y-%m'))
-    return list(res_list)
+    res_list = list(res_list)
+    res_list.sort(reverse=True)
+    return res_list
 
 
 def get_tags():

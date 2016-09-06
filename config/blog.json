@@ -4,13 +4,13 @@
       "properties": {
         "title": {
           "type": "string",
-          "indexAnalyzer": "ik",
-          "searchAnalyzer": "ik-smart"
+          "searchAnalyzer": "ik_smart",
+          "analyzer": "ik"
         },
         "content": {
           "type": "string",
-          "indexAnalyzer": "ik",
-          "searchAnalyzer": "ik-smart"
+          "searchAnalyzer": "ik_smart",
+          "analyzer": "ik"
         },
         "create_time": {
           "type": "date"
@@ -24,6 +24,10 @@
         },
         "visible": {
           "type": "integer"
+        },
+        "id" : {
+          "type": "string",
+          "index": "not_analyzed"
         }
       }
     }

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
 import os
 
+import datetime
+import elasticsearch
 import pyaml
 import pymongo
 from pymongo import MongoClient
 
 from models.blog_model import Blog
 from models.user_models import BlogUser
-from utils.common_utils import now_lambda, clean_all_html, keep_only_words
+from utils.common_utils import now_lambda, clean_all_html, keep_only_words, format_datetime
 from mongoengine import *
 
 __author__ = 'fleago'
@@ -97,10 +100,115 @@ def put_info_into_es():
     config = yaml[yaml['stage']]
     client = MongoClient(config['mongo']['host'])
     blogtb = client['simpleblog']['simpleblog']
+
+    es = ES.connect_host()
     for blog in blogtb.find():
-        print blog['title'], keep_only_words(blog['content'])
+        # print blog['title'], keep_only_words(blog['content'])
+        try:
+            data = {
+                'id': unicode(blog['_id']),
+                'content': keep_only_words(blog['content']),
+                'author': unicode(blog['author']),
+                'title': blog['title'],
+                'create_time': format_datetime(blog['create_time'], '%Y-%m-%d'),
+                # 'create_time': format_datetime(blog['create_time'], '%Y/%m/%d %H:%M:%S'),
+                'update_time': format_datetime(blog['update_time'], '%Y-%m-%d'),
+                # 'update_time': format_datetime(blog['update_time'], '%Y/%m/%d %H:%M:%S'),
+                'visible': blog['visible'],
+            }
+        except Exception, e:
+            print blog['title']
+            print e
+            continue
+        # print format_datetime(blog['create_time'], '%Y/%m/%d %H:%M:%S')
+        es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(blog['_id']))
+
+
+class ES(object):
+    @classmethod
+    def connect_host(cls):
+        hosts = [{'host': 'localhost', 'port': 9200}]
+        es = elasticsearch.Elasticsearch(hosts,
+                                         sniff_on_start=True,
+                                         sniff_on_connection_fail=True,
+                                         sniffer_timeout=600)
+        return es
+
+
+def es_query(title="", start=None, end=None, reverse=False, limit_cnt=20, content=''):
+    es = ES.connect_host()
+    now = datetime.datetime.now()
+    if reverse:
+        order = "desc"
+    else:
+        order = "asc"
+    if not start:
+        start = now - datetime.timedelta(weeks=2000)
+    if not end:
+        end = now
+    range_body = {
+        "range": {
+            "create_time": {
+                "gte": start,
+                "lte": end
+            }
+        }
+    }
+    and_list = [range_body]
+    title_body = {
+        "term": {
+            "title": title
+        }
+    }
+    content_body = {
+        "term": {
+            "content": content
+        }
+    }
+    if title:
+        and_list.append(title_body)
+    if content:
+        and_list.append(content_body)
+    q_body = {
+        "size": limit_cnt,
+        "sort": [
+            {
+                "create_time": {
+                    "order": order
+                }
+            }
+        ],
+        "query": {
+            "filtered": {
+                "query": {"matchAll": {}},
+                "filter": {
+                    "and": and_list
+                }
+            }
+        }
+    }
+    res = es.search(body=q_body)
+    print json.dumps(res)
+    ret = []
+    for hit in res["hits"]["hits"]:
+        value = {}
+        src = hit["_source"]
+        if src:
+            try:
+                the_time = src["create_time"]
+                if len(the_time) < 20:
+                    value["create_time"] = datetime.datetime.strptime(the_time, "%Y-%m-%d")
+                else:
+                    value["create_time"] = datetime.datetime.strptime(the_time, "%Y-%m-%dT%H:%M:%S.%f")
+                ret.append(value)
+            except Exception as e:
+                print str(e)
+                ret = []
+                print "Query xxxxx data failed!"
+    return ret
 
 
 if __name__ == '__main__':
-    put_info_into_es()
+    # put_info_into_es()
+    es_query(title='elasticsearch')
     pass
