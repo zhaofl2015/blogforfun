@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block base_content %}
+{% include "common/show_flashed_messages.html" %}
+<div class="container">
+    <div class="col-sm-8">
+        {% if blogs is defined and blogs|length > 0 %}
+            {% for blog in blogs %}
+            <article>
+                <div class="heading"><h2 class="title" style="text-transform:none;"><a href="/blog/{{blog.id}}">{{
+                    blog.title |safe }}</a></h2></div>
+                <!--<img src="/static/images/img1.jpg"/>-->
+                <div class="content">
+                    {{ (blog.content)|safe }}...
+                </div>
+                <div class="extra">
+                    <div class="alert alert-success">
+                        {{blog.author}} 编辑于 {{blog.create_time}} - 0 评论 - 0 阅读
+                        {% if blog.visible == 2 or blog.visible == 3 %}
+                        <mark>{{blog.visible_text | safe}}</mark>
+                        {% endif %}
+                        <div class="more">
+                            <a class="button" href="/blog/{{blog.id}}">阅读全文 >></a>
+                            {% if blog['could_delete'] and g.current_user.is_authenticated and g.current_user.could_edit() %}
+                            <a class="button" href="/blog-edit?id={{ blog['id'] }}" style="margin-left:20px;">编辑</a>
+                            <!--<a class="button">删除</a>-->
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <h2>抱歉，没有找到匹配的信息</h2>
+        {% endif %}
+        <ul class="pagination" id="pagination1"></ul>
+    </div>
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <div class="input-group">
+            <input type="text" id='search_word' class="form-control" placeholder="搜你想要的">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" id='btnSearch' type="button"><span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+        </div>
+        <br/>
+        {% if g.current_user.is_authenticated and g.current_user.could_publish() %}
+        <div class="sidebar-module">
+            <a href="/blog-edit"><span class="btn btn-info">创建日志</span></a>
+        </div>
+        {% endif %}
+        <div class="sidebar-module sidebar-module-inset">
+            <h4>关于</h4>
+
+            <p>这是一个有意思的地方</p>
+        </div>
+        <div class="sidebar-module">
+            <h4>其他链接</h4>
+            <ol class="list-unstyled">
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">新浪微博</a></li>
+                <li><a href="#">网易博客</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.blog-sidebar -->
+</div>
+{% endblock %}
+
+{% block base_scripts -%}
+<script type="text/javascript" src="/static/pagination/jqPaginator.js"></script>
+
+<script>
+
+    var total = {{total | safe}};
+    var page = {{page | safe}};
+    var per_page = {{per_page | safe}};
+
+    var keyword = {{keyword|tojson}};
+
+    if(keyword !== null && keyword !== undefined && keyword !== '') {
+        $('#search_word').val(keyword);
+    }
+
+    if(total > 0) {
+        $.jqPaginator('#pagination1', {
+            totalCounts: total,
+            pageSize: per_page,
+            visiblePages: 10,
+            currentPage: page,
+            onPageChange: function (num, type) {
+                if (type == 'change') {
+                    var keyword = $('#search_word').val();
+                    if (keyword !== null && keyword !== undefined && keyword !== '') {
+                        $.ajax({
+                            type: 'post',
+                            url: '/search-blog',
+                            data: {
+                                keyword: keyword,
+                                page: num,
+                            },
+                            dataType: 'html',
+                            success: function (res) {
+                                $('html').html(res);
+                            }
+                        });
+                    }
+                    else {
+                        //                alert('没有取值');
+                        window.location.href = '/blogs?page=' + num.toString();
+                    }
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $('#btnSearch').click(function () {
+            var keyword = $('#search_word').val();
+            $.ajax({
+                type: 'post',
+                url: '/search-blog',
+                data: {
+                    keyword: keyword,
+                },
+                dataType: 'html',
+                success: function (res) {
+//                    alert(res.error);
+                    $('html').html(res);
+                }
+            });
+        });
+    });
+</script>
+{%- endblock %}

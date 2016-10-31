@@ -9,13 +9,27 @@ __author__ = 'fleago'
 
 INTERNAL_CACHE = dict()
 
+
 def now_lambda():
     return datetime.now()
+
 
 def format_datetime(dt, format='%Y-%m-%d %H:%M:%S'):
     if not dt:
         return ''
     return dt.strftime(format)
+
+
+def to_datetime(dt_str, format='%Y-%m-%d %H:%M:%S'):
+    """
+    """
+    # noinspection PyBroadException
+    try:
+        dt = datetime.strptime(dt_str, format)
+        return dt
+    except:
+        return None
+
 
 def version_url(endpoint, **values):
     """给css、js的url后面加上最后修改时间。
@@ -28,6 +42,7 @@ def version_url(endpoint, **values):
             modify_time = int(os.path.getmtime(full_path))
             INTERNAL_CACHE[full_path] = modify_time
     return url_for(endpoint, v=modify_time, **values)
+
 
 def get_path_by_root_path(path_name):
     # 根据项目根目录定位，支持从不同目录启动脚本
@@ -48,3 +63,16 @@ def keep_only_words(content):
     content = content.replace('&quot;', '\"')
     content = content.replace('&#39;', '\'')
     return content
+
+
+def get_next_month(month_str):
+    """
+    month str 格式 2016-02
+    :param month_str:
+    :return:
+    """
+    year, month = month_str.split('-')
+    if int(month) == 12:
+        return '%d-%02d' % (int(year) + 1, 1)
+    else:
+        return '%d-%02d' % (int(year), int(month) + 1)

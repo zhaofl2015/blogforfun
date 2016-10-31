@@ -11,11 +11,14 @@
 @file: blog_model.py
 @time: 2015/10/25 21:35
 """
+import json
+
 from bson import ObjectId
 # from flask.ext.login import current_user
 
 from models.user_models import BlogUser
-from utils.common_utils import now_lambda, format_datetime, clean_all_html
+from utils.common_utils import now_lambda, format_datetime, clean_all_html, keep_only_words
+from models.es_model import ES
 from . import *
 
 
@@ -54,7 +57,7 @@ class Blog(Document):
     }
 
     @classmethod
-    def get_blogs_could_view(cls, current_user):
+    def get_blogs_could_view(cls, current_user, count):
         """
         获得一个用户可以查看的blog信息列表
         :param current_user:
@@ -127,6 +130,21 @@ class Blog(Document):
         dic['visible_text'] = self.VISIBLE_TYPE_DICT.get(self.visible, '')
         return dic
 
+    @classmethod
+    def post_save(cls, sender, document, **kwargs):
+        data = {
+            'id': unicode(document.id),
+            'content': keep_only_words(document.content),
+            'author': unicode(document.author),
+            'title': document.title,
+            'create_time': format_datetime(document.create_time, '%Y-%m-%d'),
+            'update_time': format_datetime(document.update_time, '%Y-%m-%d'),
+            'visible': document.visible,
+        }
+
+        es = ES.connect_host()
+        es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(document.id))
+
 
 class BlogTag(Document):
     """
@@ -147,6 +165,7 @@ class BlogTag(Document):
 
     def as_dict(self):
         dic = dict(self.to_mongo())
+        dic['_id'] = unicode(self.id)
         dic['id'] = unicode(self.id)
         dic['last_use_time'] = format_datetime(self.last_use_time)
         dic['create_time'] = format_datetime(self.create_time)
@@ -154,5 +173,5 @@ class BlogTag(Document):
         dic['delete_time'] = format_datetime(self.delete_time)
         return dic
 
-if __name__ == '__main__':
-    pass
+
+signals.post_save.connect(Blog.post_save, sender=Blog)

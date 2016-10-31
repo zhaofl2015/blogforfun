@@ -1,5 +1,10 @@
 <div>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(category_filter=['error']) %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=['message']) %}
         {% for message in messages %}
             <div class="alert alert-info" role="alert">{{ message }}</div>
         {% endfor %}

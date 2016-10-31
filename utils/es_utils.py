@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import copy
 import datetime
 import json
 
+import re
+
 __author__ = 'fanglei.zhao'
 
-from models.es_model import ES
+import models
 
 
 def es_query(title="", start=None, end=None, reverse=False, limit_cnt=20, content=''):
-    es = ES.connect_host()
+    es = models.es_model.ES.connect_host()
     now = datetime.datetime.now()
     if reverse:
         order = "desc"
@@ -59,6 +62,12 @@ def es_query(title="", start=None, end=None, reverse=False, limit_cnt=20, conten
                     "and": and_list
                 }
             }
+        },
+        "highlight": {
+            "fields": {
+                "title": {},
+                "content": {},
+            }
         }
     }
     res = es.search(body=q_body)
@@ -104,3 +113,22 @@ def es_extract_id(search_res):
         id_list.append(item.get('id', ''))
 
     return timed_out, took, total, id_list
+
+
+def es_extract_info_with_highlight(search_res):
+    """抽取信息，并高亮显示"""
+    data = search_res
+    timed_out = data.get('timed_out', False)
+    took = data.get('took', 0)
+    total = data.get('hits', {}).get('total', 0)
+    item_list = list()
+    for item in data.get('hits', {}).get('hits', []):
+        highlight = item.get('highlight', {})
+        item = item.get('_source', {})
+        item['author'] = models.user_models.BlogUser.get_username_with_id(item['author'])
+        for k, v in highlight.iteritems():
+            item[k] = re.sub('<em>([^<]*)</em>', '<em><font color="red">\g<1></font></em>', v[0])
+
+        item_list.append(item)
+
+    return timed_out, took, total, item_list

@@ -47,9 +47,9 @@ class BlogUser(Document):
     deleted_at = DateTimeField(default=None)
 
     meta = {
-        'collection' : 'blog_user',
-        'db_alias' : BlogConfig.mongodb_blog_alias,
-        'strict' : False
+        'collection': 'blog_user',
+        'db_alias': BlogConfig.mongodb_blog_alias,
+        'strict': False
     }
 
     @classmethod
@@ -102,13 +102,26 @@ class BlogUser(Document):
 
     def as_json(self):
         return {
-            'username' : self.username,
-            'nickname' : self.nickname,
-            '_id' : unicode(self['id']),
-            'email' : self.email,
-            'privileges_text' : self.privileges_text(),
-            'last_login_time_display' : format_datetime(self.last_login_time),
-            'last_login_ip' : self.last_login_ip,
-            'status' : self.status,
-            'status_display' : self.get_status_display()
+            'username': self.username,
+            'nickname': self.nickname,
+            '_id': unicode(self['id']),
+            'email': self.email,
+            'privileges_text': self.privileges_text(),
+            'last_login_time_display': format_datetime(self.last_login_time),
+            'last_login_ip': self.last_login_ip,
+            'status': self.status,
+            'status_display': self.get_status_display()
         }
+
+    @classmethod
+    def get_username_with_id(cls, str_or_objectId):
+        if isinstance(str_or_objectId, basestring):
+            str_or_objectId = ObjectId(str_or_objectId)
+        if isinstance(str_or_objectId, ObjectId) is False:
+            return ''
+
+        user = cls.objects.with_id(str_or_objectId)
+        if user:
+            return user.username
+        else:
+            return ''

@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
+{% block base_styles %}
+<link type="text/css" rel="stylesheet" href="../../static/css/common.css" />
+{% endblock %}
+
 {% block base_content %}
+{% include "common/show_flashed_messages.html" %}
 <div class="container">
     <div class="col-sm-8">
         {% for blog in blogs %}
@@ -55,9 +60,15 @@
             <h4>归档</h4>
             <ol class="list-unstyled">
                 {% for item in monthes %}
-                <li><a href="#">{{ item }}</a></li>
+                <li><a href="/blog-archive/{{item}}">{{ item }}</a></li>
                 {% endfor %}
             </ol>
+        </div>
+        <div id="tagscloud">
+            <h4><strong>标签云</strong></h4>
+            {% for item in tags %}
+            <a href={{item.url}} class={{item.css_type}}>{{item.name}}</a>
+            {% endfor %}
         </div>
         <div class="sidebar-module">
             <h4>其他链接</h4>
@@ -74,6 +85,7 @@
 
 {% block base_scripts -%}
 <script type="text/javascript" src="/static/pagination/jqPaginator.js"></script>
+<script type="application/javascript" src="../../static/tags/tagscloud.js"></script>
 <script>
     $(function () {
         $('.delete').click(function () {
@@ -94,15 +106,44 @@
     var total = {{total | safe}};
     var page = {{page | safe}};
     var per_page = {{per_page | safe}};
+//    var next_page_url = {{next_page_url | string}};
+
+//    if (keyword !== undefined && keyword !== '' && keyword !== null) {
+//        var keyword = {{ keyword | safe }};
+//    }
+    var keyword = {{keyword|tojson}};
+
+    if(keyword !== null && keyword !== undefined && keyword !== '') {
+        $('#search_word').val(keyword);
+    }
 
     $.jqPaginator('#pagination1', {
         totalCounts: total,
         pageSize: per_page,
-        visiblePages: Math.min(total, 10),
+        visiblePages: 10,
         currentPage: page,
         onPageChange: function (num, type) {
-            if(type == 'change')
-                window.location.href= '/blogs?page=' + num.toString();
+            if(type == 'change') {
+                var keyword = $('#search_word').val();
+                if (keyword !== null && keyword !== undefined && keyword !== '') {
+                    $.ajax({
+                        type: 'post',
+                        url: '/search-blog',
+                        data: {
+                            keyword: keyword,
+                            page: num,
+                        },
+                        dataType: 'html',
+                        success: function (res) {
+                            $('html').html(res);
+                        }
+                    });
+                }
+                else {
+                    //                alert('没有取值');
+                    window.location.href = '/{{next_page_url}}?page=' + num.toString();
+                }
+            }
         }
     });
 

@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block base_styles %}
+<link type="text/css" rel="stylesheet" href="../../static/css/common.css" />
+{% endblock %}
+
+
 {% block base_content %}
 
 <div class="container">
@@ -79,6 +84,12 @@
                     {% endfor %}
                 </ol>
             </div>
+            <div id="tagscloud">
+                <h4><strong>标签云</strong></h4>
+                {% for item in tags %}
+                <a href={{item.url}} class={{item.css_type}}>{{item.name}}</a>
+                {% endfor %}
+            </div>
             <div class="sidebar-module">
                 <h4>相关链接</h4>
                 <ol class="list-unstyled">
@@ -98,6 +109,7 @@
 {% endblock %}
 
 {% block base_scripts -%}
+    <script type="application/javascript" src="../../static/tags/tagscloud.js"></script>
     <script>
         $(function () {
             $('#btnDelete').click(function () {
