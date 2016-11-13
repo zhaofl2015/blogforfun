@@ -106,7 +106,7 @@
     var total = {{total | safe}};
     var page = {{page | safe}};
     var per_page = {{per_page | safe}};
-//    var next_page_url = {{next_page_url | string}};
+    var next_page_url = "{{next_page_url}}";
 
 //    if (keyword !== undefined && keyword !== '' && keyword !== null) {
 //        var keyword = {{ keyword | safe }};
@@ -116,6 +116,7 @@
     if(keyword !== null && keyword !== undefined && keyword !== '') {
         $('#search_word').val(keyword);
     }
+
 
     $.jqPaginator('#pagination1', {
         totalCounts: total,
