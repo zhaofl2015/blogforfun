@@ -142,8 +142,11 @@ class Blog(Document):
             'visible': document.visible,
         }
 
-        es = ES.connect_host()
-        es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(document.id))
+        try:
+            es = ES.connect_host()
+            es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(document.id))
+        except:
+            print 'es connect failed'
 
 
 class BlogTag(Document):

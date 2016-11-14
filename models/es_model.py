@@ -13,5 +13,6 @@ class ES(object):
         es = elasticsearch.Elasticsearch(hosts,
                                          sniff_on_start=True,
                                          sniff_on_connection_fail=True,
-                                         sniffer_timeout=600)
+                                         sniffer_timeout=600,
+                                         timeout=60)
         return es
