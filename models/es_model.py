@@ -9,7 +9,7 @@ __author__ = 'fanglei.zhao'
 class ES(object):
     @classmethod
     def connect_host(cls):
-        hosts = [{'host': 'localhost', 'port': 9200}]
+        hosts = [{'host': '127.0.0.1', 'port': 9200}]
         es = elasticsearch.Elasticsearch(hosts,
                                          sniff_on_start=True,
                                          sniff_on_connection_fail=True,

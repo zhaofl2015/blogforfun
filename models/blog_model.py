@@ -145,8 +145,8 @@ class Blog(Document):
         try:
             es = ES.connect_host()
             es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(document.id))
-        except:
-            print 'es connect failed'
+        except Exception, e:
+            print 'es connect failed, %s' % e
 
 
 class BlogTag(Document):
