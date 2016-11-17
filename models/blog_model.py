@@ -170,6 +170,7 @@ class BlogTag(Document):
         dic = dict(self.to_mongo())
         dic['_id'] = unicode(self.id)
         dic['id'] = unicode(self.id)
+        dic['name_count'] = '%s (%d)' % (self.name, self.count)
         dic['last_use_time'] = format_datetime(self.last_use_time)
         dic['create_time'] = format_datetime(self.create_time)
         dic['update_time'] = format_datetime(self.update_time)

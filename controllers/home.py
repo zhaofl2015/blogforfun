@@ -13,6 +13,7 @@
 """
 import random
 
+from models.es_model import ES
 from utils.es_utils import es_query, es_extract_info, es_extract_id, es_extract_info_with_highlight
 from . import *  # 从__init__中导入所有的文件
 from models.blog_model import Blog, BlogTag
@@ -277,8 +278,31 @@ def get_tags():
     res_list = list()
     for item in BlogTag.objects(delete_time=None).order_by('-count'):
         res_list.append(item.as_dict())
+
+    # 更新实际使用的tag的数量，之前的数量已经不准确
+    es = ES.connect_host()
+    ret = es.search('simpleblog', 'blogpost', {
+        'aggs': {
+            'all_tags': {
+                'terms': {
+                    'field': 'tags',
+                    'size': 0
+                }
+            }
+        }
+    }, size=1000)
+
+    name_count = dict([(b['key'], b['doc_count']) for b in ret['aggregations']['all_tags']['buckets']])
+
+    for item in res_list:
+        if item['name'] in name_count:
+            item['count'] = name_count.get(item['name'])
+            item['name_count'] = '%s (%d)' % (item['name'], item['count'])
+        else:
+            item['count'] = 0
+            item['name_count'] = '%s (%d)' % (item['name'], 0)
+
     return res_list
-    # return jsonify()
 
 
 def get_tags_cloud():
