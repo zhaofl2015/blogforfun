@@ -173,7 +173,7 @@ def show_blog(id):
     # 设置上个观察者的ip
     Blog.objects(id=ObjectId(id)).update(set__last_view_ip=request.remote_addr)
     # 设置上个观看者的用户id
-    Blog.objects(id=ObjectId(id)).update(set__last_view_user=current_user.id if current_user.is_active is False else None)
+    Blog.objects(id=ObjectId(id)).update(set__last_view_user=current_user.id if current_user.is_active and current_user.is_anounymous is False else None)
     # 设置上次观看的时间
     Blog.objects(id=ObjectId(id)).update(set__last_view_time=now_lambda())
 
