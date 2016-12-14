@@ -10,3 +10,4 @@ development:
   mongo-gfs:
     host: 127.0.0.1:27107
   access-log: D:\GitHub\blogforfun\logs\access.log
+  app-log: D:\GitHub\blogforfun\logs\app.log

@@ -35,6 +35,7 @@ class BlogConfig(object):
     mongodb_host = yaml[stage]['mongo']['host']
 
     access_log = yaml[stage]['access-log']
+    app_log = yaml[stage]['app-log']
 
 
 def _get_path_by_root_path(path_name):

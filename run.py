@@ -39,6 +39,9 @@ handler = logging.FileHandler(config.BlogConfig.access_log)
 logger.addHandler(handler)
 app.logger.addHandler(handler)
 
+app_handler = logging.FileHandler(config.BlogConfig.app_log)
+app.logger.addHandler(app_handler)
+
 
 def go_for_fun():
     return '1+2=3? You got it!'
@@ -57,8 +60,5 @@ def teardown_request(exception):
     pass
 
 if __name__ == '__main__':
+    app.logger.info('server started', 2, 3, 4)
     manager.run()
-
-
-
-
