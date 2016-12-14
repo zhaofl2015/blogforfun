@@ -12,6 +12,7 @@ __author__ = 'fleago'
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.yaml')
 yaml = pyaml.yaml.safe_load(open(config_path))
 
+
 class BlogConfig(object):
     """配置"""
 
@@ -32,6 +33,8 @@ class BlogConfig(object):
 
     mongodb_gfs_resource_host = yaml[stage]['mongo-gfs']['host']
     mongodb_host = yaml[stage]['mongo']['host']
+
+    access_log = yaml[stage]['access-log']
 
 
 def _get_path_by_root_path(path_name):

@@ -3,6 +3,7 @@
 from controllers.file import file_op_app
 from controllers.user import login_manager
 from utils.common_utils import version_url
+import logging
 
 __author__ = 'fleago'
 
@@ -32,6 +33,11 @@ if config.BlogConfig.stage == 'production':
     app.debug = False
 else:
     app.debug = True
+
+logger = logging.getLogger('werkzeug')
+handler = logging.FileHandler(config.BlogConfig.access_log)
+logger.addHandler(handler)
+app.logger.addHandler(handler)
 
 
 def go_for_fun():
