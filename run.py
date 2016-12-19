@@ -60,5 +60,5 @@ def teardown_request(exception):
     pass
 
 if __name__ == '__main__':
-    app.logger.info('server started', 2, 3, 4)
+    app.logger.info('server started')
     manager.run()

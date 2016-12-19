@@ -13,6 +13,7 @@
 """
 import json
 
+from bs4 import BeautifulSoup
 from bson import ObjectId
 # from flask.ext.login import current_user
 
@@ -148,6 +149,14 @@ class Blog(Document):
         except Exception, e:
             print 'es connect failed, %s' % e
 
+    @classmethod
+    def pre_save(cls, sender, document, **kwargs):
+        soup = BeautifulSoup(document.content)
+        for img in soup.find_all('img'):
+            img['width'] = '100%'
+            img['height'] = '100%'
+        document.content = str(soup)
+
 
 class BlogTag(Document):
     """
@@ -179,3 +188,4 @@ class BlogTag(Document):
 
 
 signals.post_save.connect(Blog.post_save, sender=Blog)
+signals.pre_save.connect(Blog.pre_save, sender=Blog)
