@@ -141,6 +141,7 @@ class Blog(Document):
             'create_time': format_datetime(document.create_time, '%Y-%m-%d'),
             'update_time': format_datetime(document.update_time, '%Y-%m-%d'),
             'visible': document.visible,
+            'tags': document.tags
         }
 
         try:
