@@ -58,6 +58,8 @@ def clean_all_html(content):
 
 def keep_only_words(content):
     """清除html标签，且清除所有的转义符"""
+    if isinstance(content, str):
+        content = content.decode('utf8')
     content = clean_all_html(content)
     content = content.replace('&nbsp;', ' ')
     content = content.replace('&quot;', '\"')
