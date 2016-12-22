@@ -289,8 +289,9 @@ def get_tags():
                     'size': 0
                 }
             }
-        }
-    }, size=1000)
+        },
+        'size': 0
+    })
 
     name_count = dict([(b['key'], b['doc_count']) for b in ret['aggregations']['all_tags']['buckets']])
 
