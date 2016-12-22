@@ -1,1 +1,18 @@
-just for fun
+                    A Simple Blog by Flask
+                    
+Description:
+A simple blog written by python & bootstrap.
+
+Features:
+1.With elasticsearch for blog search. Use ik and ik_smart for word segmentation.
+2.With mongodb for blog storage and picture storage.
+
+Environment:
+python 2.7
+mongodb 3.2
+elasticsearch 2.2.1
+
+How to run:
+1.start es: ./bin/elasticsearch
+2.start mongodb: ./bin/mongod.exe
+3.start server: python run.py runserver -h 0.0.0.0 -p 5000
