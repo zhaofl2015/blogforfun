@@ -154,9 +154,11 @@ class Blog(Document):
     def pre_save(cls, sender, document, **kwargs):
         soup = BeautifulSoup(document.content)
         for img in soup.find_all('img'):
-            img['width'] = '100%'
-            img['height'] = '100%'
+            img['max-width'] = '100%'
+            # img['height'] = '100%'
         document.content = str(soup)
+        document.content = document.content.replace("<html><body>", "")
+        document.content = document.content.replace("</body></html>", "")
 
 
 class BlogTag(Document):
