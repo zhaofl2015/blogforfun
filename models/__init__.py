@@ -5,7 +5,7 @@ from mongoengine import signals
 from config import BlogConfig
 from gridfs import GridFS
 from bson import ObjectId
-from flask.ext.mongoengine import Document  # 覆盖mongoengine的Document，使用pagination功能
+# from flask.ext.mongoengine import Document  # 覆盖mongoengine的Document，使用pagination功能
 
 
 __author__ = 'fleago'

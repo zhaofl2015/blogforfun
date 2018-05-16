@@ -8,8 +8,11 @@ import datetime
 import elasticsearch
 import pyaml
 import pymongo
+from bs4 import BeautifulSoup
+from bson import ObjectId
 from pymongo import MongoClient
 
+from controllers.home import get_tags
 from models.blog_model import Blog
 from models.user_models import BlogUser
 from utils.common_utils import now_lambda, clean_all_html, keep_only_words, format_datetime
@@ -20,17 +23,17 @@ __author__ = 'fleago'
 from mongoengine import connect
 from config import BlogConfig
 
-class TestList(Document):
-    username = ListField(StringField(), default=None)
-
+class TList(Document):
+    # username = ListField(StringField(), default=None)
+    a = IntField(choices=[1, 2, 3], default=None)
     meta = {
-        'collection' : 'test_list',
+        'collection' : 'test',
         'db_alias' : BlogConfig.mongodb_blog_alias,
         'strict' : False
     }
 
 
-def test_user():
+def t_user():
     '''添加admin账号'''
 
     # user = BlogUser()
@@ -52,7 +55,7 @@ def test_user():
     print user.username, user.password, user.nickname, user.username
     # print BlogUser.objects(username='admin').first().username
 
-def test_list():
+def t_list():
     tl = TestList.objects().first()
     if not tl:
         tl = TestList()
@@ -64,11 +67,11 @@ def test_list():
     t2.save()
 
 
-def test_prev_next():
+def t_prev_next():
     print Blog.get_prev_next('56c462de59acd1470c262e04')
 
 
-def test_update_return():
+def t_update_return():
     root = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(root, 'config', 'database.yaml')
     yaml = pyaml.yaml.safe_load(open(config_path))
@@ -86,7 +89,7 @@ def test_update_return():
     print a
 
 
-def test_chrome():
+def t_chrome():
     from selenium import webdriver
 
     browser = webdriver.Chrome('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')
@@ -102,7 +105,7 @@ def put_info_into_es():
     blogtb = client['simpleblog']['simpleblog']
 
     es = ES.connect_host()
-    for blog in blogtb.find():
+    for blog in blogtb.find({'delete_time':None}):
         # print blog['title'], keep_only_words(blog['content'])
         try:
             data = {
@@ -115,14 +118,15 @@ def put_info_into_es():
                 'update_time': format_datetime(blog['update_time'], '%Y-%m-%d'),
                 # 'update_time': format_datetime(blog['update_time'], '%Y/%m/%d %H:%M:%S'),
                 'visible': blog['visible'],
+                'tags': blog['tags'],
             }
         except Exception, e:
-            print blog['title']
-            print e
+            # print blog['title']
+            # print e
             continue
         # print format_datetime(blog['create_time'], '%Y/%m/%d %H:%M:%S')
         es.index('simpleblog', 'blogpost', body=json.dumps(data), id=unicode(blog['_id']))
-
+    print 'done'
 
 class ES(object):
     @classmethod
@@ -208,7 +212,24 @@ def es_query(title="", start=None, end=None, reverse=False, limit_cnt=20, conten
     return ret
 
 
+def t_same_field_multi_expression():
+    for t in TestList.objects(a__gte=1, a__lte=2):
+        print t.a
+
+
+def t_bs():
+    conn = pymongo.Connection(host=BlogConfig.mongodb_host)
+    db = conn['simpleblog']
+
+    for blog in db.simpleblog.find({'delete_time': None, '_id': ObjectId('58577c6d59acd10c80776564')}):
+        soup = BeautifulSoup(blog['content'])
+        # print soup.prettify()
+        for img in soup.find_all('img'):
+            print img.get('src'), img.get('width'), img.get('height')
+            img['width'] = '90%'
+        blog['content'] = str(soup)
+        print str(soup)
+
+
 if __name__ == '__main__':
-    # put_info_into_es()
-    es_query(title='elasticsearch')
-    pass
+    put_info_into_es()
